@@ -378,6 +378,64 @@ api.interceptors.request.use(req => {
 ...
 ```
 
+4. Crie o arquivo services/users.tsx, e dentro insira os dados que usaremos no SignIn:
+
+```jsx
+import api from './api';
+import User from '../dtos/User';
+
+interface SignInData {
+  email: string;
+  password: string;
+}
+
+interface SignInResponse {
+  data: User
+}
+
+interface DefaultResponse {
+  message: string;
+}
+
+
+const UsersService = {
+  signIn: ({ email, password }: SignInData) => 
+    api.post<SignInResponse>('auth/v1/user/sign_in', {
+      email,
+      password
+    }),
+}
+
+export default UsersService;
+```
+
+5. E agora vamos adicionar o de SignUp no mesmo arquivo:
+
+```jsx
+...
+interface SignUpData {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+...
+  signUp: ({ 
+    name, 
+    email, 
+    password, 
+    password_confirmation 
+  }: SignUpData) => 
+    api.post<void>('/auth/v1/user', {
+      name,
+      email,
+      password,
+      password_confirmation
+    }),
+...
+```
+
+
 4. Agora vamos adicionar nosso form no nosso LoginForm:
 
 > Aqui pegamos o evento do handle Submit e realizamos a tipagem do email e do password, mandando pro endpoint do signIn. Assim, armazenamos os dados recebidos em um hash e enviamos para o redux por meio do Dispatch.
