@@ -43,71 +43,69 @@ const SignUpForm: React.FC<SignUpProps> = ({ titlePhrase, buttonPhrase }) => {
   }
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <Row>
         <Col lg={{ span: 6, offset: 3 }} md={{ span: 8, offset: 2 }}>
           <BlueBackground>
             <h4>{titlePhrase}</h4>
 
-            <form onSubmit={handleSubmit}>
-                <InputGroup className="mt-3">
-                  <FormControl 
-                    placeholder="Meu Nome"
-                    type="text"
-                    value={name}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) => 
-                        setName(evt.target.value)
-                    }
-                    required
-                  />
-                </InputGroup>
+            <InputGroup className="mt-3">
+              <FormControl 
+                placeholder="Meu Nome"
+                type="text"
+                value={name}
+                onChange={
+                  (evt: React.ChangeEvent<HTMLInputElement>) => 
+                    setName(evt.target.value)
+                }
+                required
+              />
+            </InputGroup>
 
-                <InputGroup className="mt-3">
-                  <FormControl 
-                    placeholder="Meu e-mail" 
-                    type="email"
-                    value={email}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) => 
-                        setEmail(evt.target.value)
-                    }
-                    required
-                  />
-                </InputGroup>
+            <InputGroup className="mt-3">
+              <FormControl 
+                placeholder="Meu e-mail" 
+                type="email"
+                value={email}
+                onChange={
+                  (evt: React.ChangeEvent<HTMLInputElement>) => 
+                    setEmail(evt.target.value)
+                }
+                required
+              />
+            </InputGroup>
 
-                <InputGroup className="mt-3">
-                  <FormControl 
-                    placeholder="Senha" 
-                    type="password"
-                    value={password}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) => 
-                        setPassword(evt.target.value)
-                    }
-                    required
-                  />
-                </InputGroup>
+            <InputGroup className="mt-3">
+              <FormControl 
+                placeholder="Senha" 
+                type="password"
+                value={password}
+                onChange={
+                  (evt: React.ChangeEvent<HTMLInputElement>) => 
+                    setPassword(evt.target.value)
+                }
+                required
+              />
+            </InputGroup>
 
-                <InputGroup className="mt-3">
-                  <FormControl 
-                    placeholder="Confirmação de senha" 
-                    type="password"
-                    value={passwordConfirmation}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) => 
-                        setPasswordConfirmation(evt.target.value)
-                    }
-                    required
-                  />
-                </InputGroup>
+            <InputGroup className="mt-3">
+              <FormControl 
+                placeholder="Confirmação de senha" 
+                type="password"
+                value={passwordConfirmation}
+                onChange={
+                  (evt: React.ChangeEvent<HTMLInputElement>) => 
+                    setPasswordConfirmation(evt.target.value)
+                }
+                required
+              />
+            </InputGroup>
 
-                <Button type="submit" className="btn btn-info mt-3 w-100">CRIAR</Button>
-              </form>
+            <Button type="submit" className="btn btn-info mt-3 w-100">{buttonPhrase}</Button>
           </BlueBackground>
         </Col>
       </Row>
-    </div>
+    </form>
   )
 }
 
