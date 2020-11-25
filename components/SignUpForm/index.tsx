@@ -6,9 +6,12 @@ import UsersService from '../../services/users';
 
 import { toast } from 'react-toastify';
 
+import { useDispatch } from 'react-redux';
+import { setLoggedUser } from '../../store/modules/auth/reducer';
+
 interface SignUpProps {
-  titlePhrase: String,
-  buttonPhrase: String
+  titlePhrase: string;
+  buttonPhrase: string;
 }
 
 const SignUpForm: React.FC<SignUpProps> = ({ titlePhrase, buttonPhrase }) => {
@@ -16,6 +19,8 @@ const SignUpForm: React.FC<SignUpProps> = ({ titlePhrase, buttonPhrase }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+
+  const dispatch = useDispatch();
 
 
   const handleSubmit = async(evt: React.FormEvent):Promise<void> => {
@@ -33,7 +38,15 @@ const SignUpForm: React.FC<SignUpProps> = ({ titlePhrase, buttonPhrase }) => {
         password_confirmation: passwordConfirmation 
       });
 
-      toast.success('Registro realizado com sucesso!');
+      toast.info('Registro realizado com sucesso! Para continuar faça seu login.');
+
+      dispatch(setLoggedUser({ 
+        id: 0,
+        name,
+        email,
+        profile: 'client'
+      }))
+
     } catch(err) {
       if(err.response.data.errors) {
         toast.warning(err.response.data.errors.full_messages[0]);
@@ -102,7 +115,7 @@ const SignUpForm: React.FC<SignUpProps> = ({ titlePhrase, buttonPhrase }) => {
                   />
                 </InputGroup>
 
-                <Button type="submit" className="btn btn-info mt-3 w-100">CRIAR</Button>
+                <Button type="submit" className="btn btn-info mt-3 w-100">{buttonPhrase}</Button>
               </form>
           </BlueBackground>
         </Col>
