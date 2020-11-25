@@ -47,6 +47,10 @@ const SignUpForm: React.FC<SignUpProps> = ({ titlePhrase, buttonPhrase }) => {
         profile: 'client'
       }))
 
+      setName('');
+      setEmail('');
+      setPassword('');
+      setPasswordConfirmation('');
     } catch(err) {
       if(err.response.data.errors) {
         toast.warning(err.response.data.errors.full_messages[0]);
