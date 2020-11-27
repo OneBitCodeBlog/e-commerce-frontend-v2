@@ -12,13 +12,50 @@ import withAuthAdmin from '../../../../components/withAuthAdmin';
 
 import useSWR from 'swr';
 import CategoriesService from '../../../../services/categories';
+import Category from '../../../../dtos/Category';
+
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setCategoryToEdit } from '../../../../store/modules/admin/category/reducer';
+import { useRouter } from 'next/router';
 
 const List: React.FC = () => {
-  const [show, setShow] = useState(null);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
+  const [categoryToRemove, setCategoryToRemove] = useState(0);
 
-  const { data, error } = useSWR('/admin/v1/categories', CategoriesService.index)
+  const { data, error, mutate } = useSWR('/admin/v1/categories', CategoriesService.index)
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleClose = async (success: boolean): Promise<void> => { 
+    setShow(false);
+
+    if (!success) return;
+
+    try {
+      await CategoriesService.delete(categoryToRemove);
+      toast.info('Categoria removida com sucesso!');
+      mutate();
+    } catch (err){
+      toast.error('Ocorreu um erro ao remove uma categoria, tente novamente.');
+      console.log(err);
+    }
+  }
+
+  const handleShow = (id: number): void => {
+    setShow(true);
+    setCategoryToRemove(id);
+  }
+
+  const handleEdit = (category: Category): void => {
+    dispatch(setCategoryToEdit(category));
+    router.push('/Admin/Category/Edit');
+  }
+
+  if(error) {
+    toast.error('Erro ao listar categorias');
+    console.log(error);
+  }
 
   return (
     <AdminComponent>
@@ -37,8 +74,23 @@ const List: React.FC = () => {
               data.categories.map(category => (
                 <tr className={styles.table_line} key={category.id}>
                   <td>{category.name}</td>
-                  <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                  <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faEdit} 
+                        onClick={() => handleEdit(category)}
+                      />
+                    </div>
+                  </td>
+
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faTrash} 
+                        onClick={() => handleShow(category.id)} 
+                      />
+                    </div>
+                  </td>
                 </tr>
               ))
             }

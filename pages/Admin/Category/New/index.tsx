@@ -19,7 +19,6 @@ const New: React.FC = () => {
 
     const handleSubmit = async (evt: React.FormEvent): Promise<void> => {
         evt.preventDefault();
-        console.log(categoryName)
 
         try {
             await CategoriesService.create(categoryName);
@@ -28,7 +27,7 @@ const New: React.FC = () => {
             router.back();
         } catch(err) {
             toast.error('Ocorreu algum erro, tente novamente!');
-            console.log(err.response);
+            console.log(err);
         }
     }
 

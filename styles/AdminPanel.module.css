@@ -57,3 +57,7 @@
     color: white;
     border: none;
 }
+
+.hover :hover {
+    color: #0056b3;
+}
