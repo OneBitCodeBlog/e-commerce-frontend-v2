@@ -6,6 +6,7 @@ import { faEdit, faTrash, faGhost } from '@fortawesome/free-solid-svg-icons';
 import AdminListTable from '../../../../components/shared/AdminListTable';
 import AdminDeleteModal from '../../../../components/shared/AdminDeleteModal';
 import styles from '../../../../styles/AdminPanel.module.css';
+import NoData from '../../../../components/shared/NoData';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
@@ -19,43 +20,33 @@ const List: React.FC = () => {
 
   const { data, error } = useSWR('/admin/v1/categories', CategoriesService.index)
 
-  console.log('data', data);
-  console.log('erros', error);
   return (
     <AdminComponent>
-      <TitleAdminPanel title="Categorias" path="Dashboard > Categorias" icon={faGhost} />
+      <TitleAdminPanel 
+        title="Categorias" 
+        path="Dashboard > Categorias" 
+        icon={faGhost} 
+        newPath="/Admin/Category/New"/>
 
       <AdminDeleteModal handleClose={handleClose} show={show} target="categoria" />
 
-      <AdminListTable first_title="Nome da categoria">
-        {/* {
-          data?.categories.map(category => (
-            <tr className={styles.table_line} key={category.id}>
-              <td>{category.name}</td>
-              <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-              <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-            </tr>
-          ))
-        } */}
-
-        <tr className={styles.table_line}>
-          <td>Suspense</td>
-          <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-          <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-        </tr>
-
-        <tr className={styles.table_line}>
-          <td>Mundo Aberto</td>
-          <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-          <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-        </tr>
-
-        <tr className={styles.table_line}>
-          <td>Ação</td>
-          <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-          <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-        </tr>
-      </AdminListTable>
+      {
+        data && data.categories && data.categories.length > 0 ? (
+          <AdminListTable first_title="Nome da categoria">
+            {
+              data.categories.map(category => (
+                <tr className={styles.table_line} key={category.id}>
+                  <td>{category.name}</td>
+                  <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
+                  <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
+                </tr>
+              ))
+            }
+          </AdminListTable>
+        ) : (
+          <NoData />
+        )
+      }
     </AdminComponent>
   )
 }

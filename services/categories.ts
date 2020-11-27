@@ -9,6 +9,10 @@ interface CategoryIndexData {
 const CategoriesService = {
   index: (url: string) => {
     return api.get<CategoryIndexData>(url).then(response => response.data)
+  },
+
+  create: (name: string) => {
+    return api.post<void>('/admin/v1/categories', { name })
   }
 }
 
