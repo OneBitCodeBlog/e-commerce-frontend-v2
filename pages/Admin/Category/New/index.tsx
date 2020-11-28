@@ -5,7 +5,6 @@ import { Form } from 'react-bootstrap';
 import { faUserPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../../../styles/AdminPanel.module.css';
 import StyledButton from '../../../../components/shared/StyledButton';
-import Link from 'next/link';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
@@ -51,13 +50,20 @@ const New: React.FC = () => {
                     />
 
                     <div className={styles.details_button}>
-                        <StyledButton type="submit" icon={faUserPlus} action={"Salvar"} type_button="blue" />
+                        <StyledButton 
+                            type="submit" 
+                            icon={faUserPlus} 
+                            action={"Salvar"} 
+                            type_button="blue" 
+                        />
 
-                        <Link href="/Admin/Category/List">
-                            <a>
-                                <StyledButton icon={faTimes} action={"Cancelar"} type_button="red" />
-                            </a>
-                        </Link>
+                        
+                        <StyledButton 
+                            icon={faTimes} 
+                            action={"Cancelar"} 
+                            type_button="red" 
+                            onClick={() => router.back()}
+                        />
                     </div>
                 </Form>
             </div>

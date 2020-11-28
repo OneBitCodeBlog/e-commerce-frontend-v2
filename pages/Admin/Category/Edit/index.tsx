@@ -10,7 +10,6 @@ import withAuthAdmin from '../../../../components/withAuthAdmin';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { clearCategoryToEdit } from '../../../../store/modules/admin/category/reducer';
@@ -73,15 +72,12 @@ const Edit: React.FC = () => {
                             type="submit"
                         />
                         
-                        <Link href="/Admin/Category/List">
-                            <a>
-                                <StyledButton 
-                                    icon={faTimes} 
-                                    action={"Cancelar"} 
-                                    type_button="red" 
-                                />
-                            </a>
-                        </Link>
+                        <StyledButton 
+                            icon={faTimes} 
+                            action={"Cancelar"} 
+                            type_button="red" 
+                            onClick={() => router.back()}
+                        />
                     </div>
                 </Form>
             </div>
