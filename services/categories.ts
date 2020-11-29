@@ -8,7 +8,19 @@ interface CategoryIndexData {
 
 const CategoriesService = {
   index: (url: string) => {
-    return api.get<CategoryIndexData>(url).then(response => response.data)
+    return api.get<CategoryIndexData>(url).then(response => response.data);
+  },
+
+  create: (name: string) => {
+    return api.post<void>('/admin/v1/categories', { name });
+  },
+
+  update: ({id, name}: Category) => {
+    return api.put<void>(`/admin/v1/categories/${id}`, { name });
+  },
+
+  delete: (id: number) => {
+    return api.delete<void>(`/admin/v1/categories/${id}`);
   }
 }
 

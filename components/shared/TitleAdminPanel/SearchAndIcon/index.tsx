@@ -5,12 +5,14 @@ import { InputGroup, FormControl, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import StyledButton from '../../StyledButton';
+import Link from 'next/link';
 
 interface SearchAndIcon {
-    icon: IconProp
+    icon: IconProp;
+    newPath: string;
 }
 
-const SearchAndIcon: React.FC<SearchAndIcon> = ({icon}) => {
+const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
     return (
         <Row>
             <Col lg={9} xs>
@@ -28,7 +30,11 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({icon}) => {
             </Col>
 
             <Col lg={2} xs={{span: 3}} className={styles.titleButton}>
-                <StyledButton icon={icon} type_button="blue" />
+                <Link href={newPath}>
+                    <a>
+                        <StyledButton icon={icon} type_button="blue" />
+                    </a>
+                </Link>
             </Col>
         </Row>
     )

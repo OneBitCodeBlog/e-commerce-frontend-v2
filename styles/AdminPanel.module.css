@@ -5,6 +5,14 @@
     margin-top: 20px;
 }
 
+.admin_panel table thead tr th {
+    text-align: left;
+}
+
+.admin_panel table thead tr th:last-of-type {
+    text-align: center;
+}
+
 .admin_panel table {
     color: white;
     border-collapse: separate;
@@ -48,4 +56,8 @@
     background-color: var(--color-background);
     color: white;
     border: none;
+}
+
+.hover :hover {
+    color: #0056b3;
 }

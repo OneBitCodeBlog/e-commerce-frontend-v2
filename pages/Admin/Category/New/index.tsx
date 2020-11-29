@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { Form } from 'react-bootstrap';
@@ -8,21 +8,64 @@ import StyledButton from '../../../../components/shared/StyledButton';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
+import CategoriesService from '../../../../services/categories';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+
 const New: React.FC = () => {
+    const [categoryName, setCategoryName] = useState('');
+    const router = useRouter();
+
+    const handleSubmit = async (evt: React.FormEvent): Promise<void> => {
+        evt.preventDefault();
+
+        try {
+            await CategoriesService.create(categoryName);
+            toast.info('Categoria cadastrada com sucesso!');
+
+            router.back();
+        } catch(err) {
+            toast.error('Ocorreu algum erro, tente novamente!');
+            console.log(err);
+        }
+    }
+
     return (
         <AdminComponent>
             <TitleAdminPanel title="Adicionar Categoria" path="Dashboard > Categorias > Adicionar Categoria" />
 
             <div className={styles.admin_panel}>
-                <Form className={styles.new_form}>
+                <Form className={styles.new_form} onSubmit={handleSubmit}>
                     <Form.Label>Nome</Form.Label>
-                    <Form.Control type="text" placeholder="Digite seu Nome" className={styles.secundary_input} />
-                </Form>
+                    <Form.Control 
+                        type="text" 
+                        placeholder="Digite o nome da categoria" 
+                        className={styles.secundary_input} 
+                        value={categoryName}
+                        onChange={
+                            (evt: React.ChangeEvent<HTMLInputElement>) => 
+                                setCategoryName(evt.target.value)
+                        }
+                        required
+                    />
 
-                <div className={styles.details_button}>
-                    <StyledButton icon={faUserPlus} action={"Atualizar"} type_button="blue" />
-                    <StyledButton icon={faTimes} action={"Cancelar"} type_button="red" />
-                </div>
+                    <div className={styles.details_button}>
+                        <StyledButton 
+                            type="submit" 
+                            icon={faUserPlus} 
+                            action={"Salvar"} 
+                            type_button="blue" 
+                        />
+
+                        
+                        <StyledButton 
+                            icon={faTimes} 
+                            action={"Cancelar"} 
+                            type_button="red" 
+                            onClick={() => router.back()}
+                        />
+                    </div>
+                </Form>
             </div>
         </AdminComponent>
     )
