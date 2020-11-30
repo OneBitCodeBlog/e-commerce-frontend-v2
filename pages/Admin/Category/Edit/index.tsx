@@ -1,88 +1,43 @@
 import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
-import { Form } from 'react-bootstrap';
-import { faUser, faTimes } from '@fortawesome/free-solid-svg-icons';
-import styles from '../../../../styles/AdminPanel.module.css';
-import StyledButton from '../../../../components/shared/StyledButton';
+import Category from '../../../../dtos/Category';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
-import { useSelector, useDispatch } from 'react-redux';
-
-import { useRouter } from 'next/router';
-
+import { useDispatch } from 'react-redux';
 import { clearCategoryToEdit } from '../../../../store/modules/admin/category/reducer';
+
 import CategoriesService from '../../../../services/categories';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+
+import CategoryForm from '../../../../components/Admin/forms/category';
 
 const Edit: React.FC = () => {
-    const [name, setName] = useState('');
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-    const category = useSelector(state => state.category);
-    const dispatch = useDispatch();
-    const router = useRouter();
+  const handleSubmit = async (category: Category): Promise<void> => {
+    try {
+      await CategoriesService.update(category);
 
-    useEffect(() => {
-        if(category) {
-            setName(category.name);
-        }
-    }, [category])
+      toast.info('Categoria atualizada com sucesso!');
 
-    const handleSubmit = async (evt: React.FormEvent): Promise<void> => {
-        evt.preventDefault();
-
-        try {
-            await CategoriesService.update({ id: category.id, name });
-
-            toast.info('Categoria atualizada com sucesso!');
-
-            dispatch(clearCategoryToEdit());
-            router.back();
-        }catch (err) {
-            toast.error('Ocorreu um erro ao atualizar a categoria, tente novamente.');
-            console.log(err);
-        }
+      dispatch(clearCategoryToEdit());
+      router.back();
+    } catch (err) {
+      toast.error('Ocorreu um erro ao atualizar a categoria, tente novamente.');
+      console.log(err);
     }
+  }
 
-    return (
-        <AdminComponent>
-            <TitleAdminPanel title="Editar Categoria" path="Dashboard > Categorias > Detalhes da categoria > Editar categoria" />
-
-            <div className={styles.admin_panel}>
-                <Form className={styles.new_form} onSubmit={handleSubmit}>
-                    <Form.Label>Nome</Form.Label>
-                    <Form.Control 
-                        type="text" 
-                        placeholder="Digite o nome da categoria" 
-                        className={styles.secundary_input} 
-                        value={name}
-                        onChange={
-                            (evt: React.ChangeEvent<HTMLInputElement>) => 
-                                setName(evt.target.value)
-                        }
-                        required
-                        />
-
-                    <div className={styles.details_button}>
-                        <StyledButton 
-                            icon={faUser} 
-                            action={"Atualizar"} 
-                            type_button="blue" 
-                            type="submit"
-                        />
-                        
-                        <StyledButton 
-                            icon={faTimes} 
-                            action={"Cancelar"} 
-                            type_button="red" 
-                            onClick={() => router.back()}
-                        />
-                    </div>
-                </Form>
-            </div>
-        </AdminComponent>
-    )
+  return (
+    <AdminComponent>
+      <TitleAdminPanel title="Editar Categoria" path="Dashboard > Categorias > Detalhes da categoria > Editar categoria" />
+      <CategoryForm handleSubmit={handleSubmit} />
+    </AdminComponent>
+  )
 }
 
 export default withAuthAdmin(Edit);
