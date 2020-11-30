@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import Category from '../../../../dtos/Category';
