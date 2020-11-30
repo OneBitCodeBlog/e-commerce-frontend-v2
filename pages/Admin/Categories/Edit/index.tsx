@@ -34,6 +34,7 @@ const Edit: React.FC = () => {
   return (
     <AdminComponent>
       <TitleAdminPanel title="Editar Categoria" path="Dashboard > Categorias > Detalhes da categoria > Editar categoria" />
+
       <CategoryForm handleSubmit={handleSubmit} />
     </AdminComponent>
   )

@@ -20,9 +20,11 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ handleSubmit, action = 'Adi
   const [name, setName] = useState('');
   const category = useSelector(state => state.category);
 
+  // checando se a categoria não é vazia e se o a url contem a palavra Edit para
+  // setar o valor do nome para a edição
   useEffect(() => {
-    if(category) {
-        setName(category.name);
+    if(category && router.pathname.includes('Edit')) {
+      setName(category.name);
     }
   }, [category]);
 
