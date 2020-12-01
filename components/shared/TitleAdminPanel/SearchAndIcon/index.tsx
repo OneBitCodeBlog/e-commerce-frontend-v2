@@ -19,7 +19,7 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
   const [inputValue, setInputValue] = useState('');
   const dispatch = useDispatch();
 
-  // limpando a pesquisa quando o component for renderizado pela primeira vez
+  // limpando a pesquisa quando o component for renderizado
   useEffect(() => {
     dispatch(clearSearch());
   }, [])

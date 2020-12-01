@@ -28,6 +28,7 @@ const List: React.FC = () => {
 
   const { data, error, mutate } = useSWR(url, CategoriesService.index)
   const search = useSelector(state => state.search);
+  const currentPage = useSelector(state => state.pagination.currentPage);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -39,6 +40,12 @@ const List: React.FC = () => {
       setUrl(`${defaultUrl}?search[name]=${search}`)
     }
   }, [search]);
+
+  useEffect(() => {
+    if (currentPage) {
+      setUrl(`${defaultUrl}?${(search ? `search[name]=${search}&` : '')}page=${currentPage}`);
+    }
+  }, [currentPage])
 
   const handleClose = async (success: boolean): Promise<void> => { 
     setShow(false);
@@ -82,7 +89,7 @@ const List: React.FC = () => {
 
       {
         data && data.categories && data.categories.length > 0 ? (
-          <AdminListTable first_title="Nome da categoria">
+          <AdminListTable first_title="Nome da categoria" meta={data.meta}>
             {
               data.categories.map(category => (
                 <tr className={styles.table_line} key={category.id}>
