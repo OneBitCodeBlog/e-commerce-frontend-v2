@@ -36,9 +36,7 @@ const List: React.FC = () => {
   // se o search mudar (usuário deve alterar o valor do campo e teclar enter)
   // a pesquisa será feita ao alterar o url do SWR
   useEffect(() => {
-    if (search) {
-      setUrl(`${defaultUrl}?search[name]=${search}`)
-    }
+    setUrl(`${defaultUrl}?${(search ? `search[name]=${search}` : '')}`)
   }, [search]);
 
   useEffect(() => {

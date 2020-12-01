@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Meta from '../../../dtos/Meta';
 import StyledButton from '../StyledButton';
 import PaginationService from '../../../util/PaginationService';
@@ -6,10 +7,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentPage } from '../../../store/modules/admin/shared/pagination/reducer';
 
 const Pagination: React.FunctionComponent<Meta> = ({ page, length, total, total_pages }) => {
+  const [pagination, setPagination] = useState(['1']);
+
   const currentPage = useSelector(state => state.pagination.currentPage);
   const dispatch = useDispatch();
 
-  const pagination = PaginationService.execute(total_pages, page);
+  useEffect(() => {
+    dispatch(setCurrentPage(page));
+  }, [page])
+
+  useEffect(() => {
+    setPagination(PaginationService.execute(total_pages, page));
+  }, [total_pages])
 
   const handlePageClick = (page: string): void => {
     dispatch(setCurrentPage(Number(page)));
