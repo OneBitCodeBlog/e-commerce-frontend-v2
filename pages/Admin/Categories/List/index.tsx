@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,17 +15,30 @@ import CategoriesService from '../../../../services/categories';
 import Category from '../../../../dtos/Category';
 
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryToEdit } from '../../../../store/modules/admin/category/reducer';
 import { useRouter } from 'next/router';
+
+const defaultUrl = '/admin/v1/categories';
 
 const List: React.FC = () => {
   const [show, setShow] = useState(false);
   const [categoryToRemove, setCategoryToRemove] = useState(0);
+  const [url, setUrl] = useState(defaultUrl)
 
-  const { data, error, mutate } = useSWR('/admin/v1/categories', CategoriesService.index)
+  const { data, error, mutate } = useSWR(url, CategoriesService.index)
+  const search = useSelector(state => state.search);
+
   const dispatch = useDispatch();
   const router = useRouter();
+
+  // se o search mudar (usuário deve alterar o valor do campo e teclar enter)
+  // a pesquisa será feita ao alterar o url do SWR
+  useEffect(() => {
+    if (search) {
+      setUrl(`${defaultUrl}?search[name]=${search}`)
+    }
+  }, [search]);
 
   const handleClose = async (success: boolean): Promise<void> => { 
     setShow(false);
@@ -49,10 +62,10 @@ const List: React.FC = () => {
 
   const handleEdit = (category: Category): void => {
     dispatch(setCategoryToEdit(category));
-    router.push('/Admin/Category/Edit');
+    router.push('/Admin/Categories/Edit');
   }
 
-  if(error) {
+  if (error) {
     toast.error('Erro ao listar categorias');
     console.log(error);
   }
@@ -63,7 +76,7 @@ const List: React.FC = () => {
         title="Categorias" 
         path="Dashboard > Categorias" 
         icon={faGhost} 
-        newPath="/Admin/Category/New"/>
+        newPath="/Admin/Categories/New"/>
 
       <AdminDeleteModal handleClose={handleClose} show={show} target="categoria" />
 
