@@ -1,8 +1,9 @@
 import api from './api';
 import Category from '../dtos/Category';
-
+import Meta from '../dtos/Meta';
 interface CategoryIndexData {
-  categories: Category[]
+  categories: Category[];
+  meta: Meta;
 }
 
 
