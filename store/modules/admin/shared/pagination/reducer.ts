@@ -6,7 +6,7 @@ interface Pagination {
 
 const paginationReducer = createSlice({
   name: 'pagination',
-  initialState: { currentPage: 0 } as Pagination,
+  initialState: { currentPage: 1 } as Pagination,
   reducers: {
     setCurrentPage(state: Pagination, action: PayloadAction<number>) {
       state.currentPage = action.payload;

@@ -58,11 +58,7 @@ const Pagination: React.FunctionComponent<Meta> = ({ page, length, total, total_
               )
             ))
         }
-        {/* <StyledButton action="1" type_button="blue" />
-          <StyledButton action="2" type_button="blue" />
-          <StyledButton action="3" type_button="blue" />
-          ...
-          <StyledButton action="31" type_button="blue" /> */}
+
         <StyledButton 
           action=">" 
           type_button="blue" 

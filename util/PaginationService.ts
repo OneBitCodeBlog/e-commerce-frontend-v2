@@ -1,5 +1,3 @@
-import { executionAsyncResource } from "async_hooks"
-
 const PaginationService = {
   execute(total_pages: number, current_page: number): Array<string> {
     let arr: Array<string> = [];
@@ -26,7 +24,7 @@ const PaginationService = {
           arr.push('...')
         }
 
-        if(current_page < total_pages) {
+        if (current_page < total_pages) {
           arr.push(total_pages.toString());
         }
       } 
