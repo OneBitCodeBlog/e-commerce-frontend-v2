@@ -1,0 +1,14 @@
+.image {
+  width: 100%;
+}
+
+.button button {
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.background {
+  background: var(--color-primary);
+  padding: 10px;
+}
