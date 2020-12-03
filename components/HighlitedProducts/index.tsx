@@ -5,11 +5,11 @@ import Link from 'next/link';
 import styles from '../../styles/Storefront.module.css';
 import ProductInfo from '../shared/ProductInfo';
 
-interface ProductsCategoriesProps {
+interface HighlitedProductsProps {
   title: String;
 }
 
-const ProductsCategories: React.FC<ProductsCategoriesProps> = ({ title }) => {
+const HighlitedProducts: React.FC<HighlitedProductsProps> = ({ title }) => {
   return (
     <div>
       <Row className="mt-4">
@@ -51,4 +51,4 @@ const ProductsCategories: React.FC<ProductsCategoriesProps> = ({ title }) => {
   )
 }
 
-export default ProductsCategories;
+export default HighlitedProducts;

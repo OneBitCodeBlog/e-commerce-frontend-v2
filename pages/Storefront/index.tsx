@@ -2,7 +2,7 @@ import React from 'react';
 import MainComponent from '../../components/shared/MainComponent';
 import { Carousel } from 'react-bootstrap';
 import styles from '../../styles/Storefront.module.css';
-import ProductsCategories from '../../components/ProductsCategories';
+import HighlitedProducts from '../../components/HighlitedProducts';
 
 const Storefront: React.FC = () => {
     return(
@@ -33,11 +33,11 @@ const Storefront: React.FC = () => {
                 </Carousel.Item>
             </Carousel>
 
-            <ProductsCategories title="Ofertas da Semana" />
+            <HighlitedProducts title="Ofertas da Semana" />
 
-            <ProductsCategories title="Lancamentos" />
+            <HighlitedProducts title="Lancamentos" />
 
-            <ProductsCategories title="Mais Populares" />
+            <HighlitedProducts title="Mais Populares" />
         </MainComponent>
     )
 }
