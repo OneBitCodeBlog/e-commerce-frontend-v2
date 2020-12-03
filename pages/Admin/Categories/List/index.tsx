@@ -21,6 +21,8 @@ import { useRouter } from 'next/router';
 
 const defaultUrl = '/admin/v1/categories';
 
+import UrlService from '../../../../util/UrlService';
+
 const List: React.FC = () => {
   const [show, setShow] = useState(false);
   const [categoryToRemove, setCategoryToRemove] = useState(0);
@@ -36,14 +38,16 @@ const List: React.FC = () => {
   // se o search mudar (usuário deve alterar o valor do campo e teclar enter)
   // a pesquisa será feita ao alterar o url do SWR
   useEffect(() => {
-    setUrl(`${defaultUrl}?${(search ? `search[name]=${search}` : '')}`)
-  }, [search]);
+    setUrl(
+      defaultUrl +
+      UrlService.execute({ currentPage, search })
+    )
+  }, [search, currentPage]);
 
-  useEffect(() => {
-    if (currentPage) {
-      setUrl(`${defaultUrl}?${(search ? `search[name]=${search}&` : '')}page=${currentPage}`);
-    }
-  }, [currentPage])
+  const handleShow = (id: number): void => {
+    setShow(true);
+    setCategoryToRemove(id);
+  }
 
   const handleClose = async (success: boolean): Promise<void> => { 
     setShow(false);
@@ -55,14 +59,9 @@ const List: React.FC = () => {
       toast.info('Categoria removida com sucesso!');
       mutate();
     } catch (err){
-      toast.error('Ocorreu um erro ao remove uma categoria, tente novamente.');
+      toast.error('Ocorreu um erro ao remover uma categoria, tente novamente.');
       console.log(err);
     }
-  }
-
-  const handleShow = (id: number): void => {
-    setShow(true);
-    setCategoryToRemove(id);
   }
 
   const handleEdit = (category: Category): void => {

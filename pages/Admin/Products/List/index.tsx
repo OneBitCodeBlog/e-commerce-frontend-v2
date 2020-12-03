@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,14 +13,55 @@ import useSWR from 'swr';
 import ProductsService from '../../../../services/products';
 import NoData from '../../../../components/shared/NoData';
 
+import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from "react-redux";
+
+import UrlService from '../../../../util/UrlService';
+
+const defaultUrl = '/admin/v1/products';
+
 const List: React.FC = () => {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [url, setUrl] = useState(defaultUrl);
+  const [productToRemove, setProductToRemove] = useState(0);
+  
 
-  const { data, error, mutate } = useSWR('/admin/v1/products', ProductsService.index);
+  const search = useSelector(state => state.search);
+  const currentPage = useSelector(state => state.pagination.currentPage);
+  const dispatch = useDispatch();
 
-  console.log(data);
+  const { data, error, mutate } = useSWR(url, ProductsService.index);
+
+  if (error) {
+    toast.error('Erro ao listar produtos');
+    console.log(error);
+  }
+
+  useEffect(() => {
+    setUrl(
+      defaultUrl +
+      UrlService.execute({ currentPage, search })
+    )
+  }, [search, currentPage]);
+
+  const handleShow = (id: number) => {
+    setShow(true);
+    setProductToRemove(id);
+  }
+
+  const handleClose = async (success: boolean): Promise<void> => {
+    setShow(false);
+
+    if (!success) return;
+
+    try {
+      await ProductsService.delete(productToRemove);
+      mutate();
+    } catch (err) {
+      toast.error('Ocorreu um erro ao remover o produto, tente novamente.')
+      console.log(err);
+    }
+  }
 
   return (
     <AdminComponent>
@@ -31,19 +72,56 @@ const List: React.FC = () => {
         newPath="/Admin/Products/New"
       />
 
-      <AdminDeleteModal handleClose={handleClose} show={show} target="produto" />
+      <AdminDeleteModal handleClose={handleClose} show={show} target="produto"/>
 
       {
         data && data.products && data.products.length > 0 ? (
-          <AdminListTable first_title="Nome do produto" second_title="Categorias" third_title="Código" fourth_title="Status">
-            {/* <tr className={styles.table_line}>
-              <td>Ri sem dente evil</td>
-              <td>Terror, Suspense, História</td>
-              <td>#000001</td>
-              <td>Disponível</td>
-              <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-              <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-            </tr> */}
+          <AdminListTable 
+            first_title="Nome do produto" 
+            second_title="Categorias" 
+            third_title="Código" 
+            fourth_title="Status"  
+            meta={data.meta}
+          >
+            {
+              data.products.map(product => (
+                <tr className={styles.table_line}>
+                  <td>{product.name}</td>
+                  <td>
+                    { 
+                      // concatenando as categorias
+                      // adicionando uma virgula e um espaço para as que
+                      // não sejam a última
+                      product.categories.map(
+                        (category, index) => 
+                          `${ 
+                            category + 
+                            (index === product.categories.length - 1 ? '' : ', ')
+                          }`
+                      )
+                    }
+                  </td>
+                  <td>
+                    {`#${product.id}`}
+                  </td>
+                  <td>
+                    {product.status == 'available' ? 'Disponível' : 'Indisponível'}
+                  </td>
+                  <td>
+                    <a href="#">
+                      <FontAwesomeIcon icon={faEdit} />
+                    </a>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <FontAwesomeIcon 
+                        icon={faTrash} 
+                        onClick={() => handleShow(product.id)} />
+                    </a>
+                  </td>
+                </tr> 
+              ))
+            }
           </AdminListTable>
         ) : (
           <NoData />

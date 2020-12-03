@@ -58,6 +58,10 @@
     border: none;
 }
 
+.hover {
+    cursor: pointer;
+}
+
 .hover :hover {
     color: #0056b3;
 }

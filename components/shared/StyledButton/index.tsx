@@ -7,7 +7,7 @@ import styles from '../../../styles/StyledButton.module.css';
 type ButtonProps =  ButtonHTMLAttributes<HTMLButtonElement> & {
     icon?: IconProp;
     action?: string;
-    type_button: string;    
+    type_button: string;
 }
 
 const StyledButton: React.FC<ButtonProps> = ({icon, action, type_button, ...rest}) => {

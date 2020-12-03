@@ -24,6 +24,10 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
     dispatch(clearSearch());
   }, [])
 
+  const search = () => {
+    dispatch(setSearch(inputValue));
+  }
+
   return (
     <Row>
       <Col lg={9} xs>
@@ -43,7 +47,7 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
                 onKeyPress={
                   (evt: React.KeyboardEvent<HTMLInputElement>) => {
                     if (evt.key.toLowerCase() === 'enter') {
-                      dispatch(setSearch(inputValue));
+                      search()
                     }
                   }
                 }
@@ -51,8 +55,15 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
             </InputGroup>
           </Col>
 
-          <Col lg={3} xs={2} className="mt-1">
-            <FontAwesomeIcon icon={faSearch} size="lg" color="var(--color-gray-light)" className="float-left" />
+          <Col lg={3} xs={2} className="mt-1"
+            style={{cursor: 'pointer'}}>
+            <FontAwesomeIcon 
+              icon={faSearch} 
+              size="lg" 
+              color="var(--color-gray-light)" 
+              className="float-left" 
+              onClick={search}
+            />
           </Col>
         </Row>
       </Col>
