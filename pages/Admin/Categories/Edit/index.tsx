@@ -11,7 +11,7 @@ import CategoriesService from '../../../../services/categories';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
-import CategoryForm from '../../../../components/Admin/forms/category';
+import CategoryForm from '../../../../components/Admin/CategoryForm';
 
 const Edit: React.FC = () => {
   const dispatch = useDispatch();

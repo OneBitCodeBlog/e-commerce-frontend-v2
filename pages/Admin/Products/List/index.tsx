@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,7 +24,7 @@ const List: React.FC = () => {
   const [show, setShow] = useState(false);
   const [url, setUrl] = useState(defaultUrl);
   const [productToRemove, setProductToRemove] = useState(0);
-  
+
 
   const search = useSelector(state => state.search);
   const currentPage = useSelector(state => state.pagination.currentPage);
@@ -85,7 +85,7 @@ const List: React.FC = () => {
           >
             {
               data.products.map(product => (
-                <tr className={styles.table_line}>
+                <tr className={styles.table_line} key={product.id}>
                   <td>{product.name}</td>
                   <td>
                     { 
@@ -108,16 +108,16 @@ const List: React.FC = () => {
                     {product.status == 'available' ? 'Disponível' : 'Indisponível'}
                   </td>
                   <td>
-                    <a href="#">
+                    <div className={styles.hover}>
                       <FontAwesomeIcon icon={faEdit} />
-                    </a>
+                    </div>
                   </td>
                   <td>
-                    <a href="#">
+                    <div className={styles.hover}>
                       <FontAwesomeIcon 
                         icon={faTrash} 
                         onClick={() => handleShow(product.id)} />
-                    </a>
+                    </div>
                   </td>
                 </tr> 
               ))

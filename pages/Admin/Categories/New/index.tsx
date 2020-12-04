@@ -1,7 +1,7 @@
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 
-import CategoryForm from '../../../../components/Admin/forms/category';
+import CategoryForm from '../../../../components/Admin/CategoryForm';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
