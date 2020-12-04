@@ -6,11 +6,15 @@ import ProductForm from '../../../../components/Admin/ProductForm';
 
 const New: React.FC = () => {
 
+  const handleSubmit = async (product: FormData): Promise<void>  => {
+    
+  }
+
   return (
     <AdminComponent>
       <TitleAdminPanel title="Adicionar Produto" path="Dashboard > Produtos > Adicionar produtos" />
 
-      <ProductForm />
+      <ProductForm handleSubmit={handleSubmit}/>
     </AdminComponent>
   )
 }

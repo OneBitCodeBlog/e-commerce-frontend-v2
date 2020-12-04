@@ -7,7 +7,12 @@ import Image from 'next/image';
 
 import { useRouter } from 'next/router';
 
-const ProductForm: React.FC = () => {
+interface ProductFormProps {
+  handleSubmit: (product: FormData) => Promise<void>;
+  action?: string;
+}
+
+const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adicionar' }) => {
   const [id, setId] = useState(0);
   const [name, setName] = useState('');
   const [status, setStatus] = useState(0);
@@ -15,9 +20,13 @@ const ProductForm: React.FC = () => {
   const handleFormSubmit = async (evt: React.FormEvent): Promise<void> => {
     evt.preventDefault();
 
-    console.log(id);
-    console.log(name);
-    console.log(status);
+    const formData = new FormData();
+
+    formData.append('id', id.toString());
+    formData.append('name', name);
+    formData.append('status', status.toString());
+
+    handleSubmit(formData);
   }
 
   const router = useRouter();
@@ -88,7 +97,7 @@ const ProductForm: React.FC = () => {
                       (evt: React.ChangeEvent<HTMLSelectElement>) =>
                         setStatus(Number(evt.target.value))
                     }
-                    >
+                  >
                     <option value="0">Disponível</option>
                     <option value="1">Indisponível</option>
                   </Form.Control>
@@ -101,7 +110,7 @@ const ProductForm: React.FC = () => {
         <div className={styles.details_button}>
           <StyledButton
             icon={faGamepad}
-            action={"Atualizar"}
+            action={action}
             type_button="blue"
             type="submit"
           />

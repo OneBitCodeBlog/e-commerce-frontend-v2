@@ -7,11 +7,16 @@ import withAuthAdmin from '../../../../components/withAuthAdmin';
 import ProductForm from '../../../../components/Admin/ProductForm'
 
 const Edit: React.FC = () => {
+
+  const handleSubmit = async (product: FormData): Promise<void> => {
+
+  }
+
   return (
     <AdminComponent>
       <TitleAdminPanel title="Editar Produto" path="Dashboard > Produtos > Detalhes do produto > Editar produto" />
 
-      <ProductForm />
+      <ProductForm action="Atualizar" handleSubmit={handleSubmit}/>
     </AdminComponent>
   )
 }
