@@ -1,0 +1,15 @@
+.image {
+  max-width: 240px;
+  max-height: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.details_button {
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
