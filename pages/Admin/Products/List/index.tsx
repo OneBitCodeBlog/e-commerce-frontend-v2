@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from "react-redux";
 
 import UrlService from '../../../../util/UrlService';
+import Product from '../../../../dtos/Product';
 
 const defaultUrl = '/admin/v1/products';
 
@@ -31,11 +32,6 @@ const List: React.FC = () => {
   const dispatch = useDispatch();
 
   const { data, error, mutate } = useSWR(url, ProductsService.index);
-
-  if (error) {
-    toast.error('Erro ao listar produtos');
-    console.log(error);
-  }
 
   useEffect(() => {
     setUrl(
@@ -61,6 +57,15 @@ const List: React.FC = () => {
       toast.error('Ocorreu um erro ao remover o produto, tente novamente.')
       console.log(err);
     }
+  }
+
+  const handleEdit = (product: Product): void => {
+    
+  }
+
+  if (error) {
+    toast.error('Erro ao listar produtos');
+    console.log(error);
   }
 
   return (
@@ -109,7 +114,10 @@ const List: React.FC = () => {
                   </td>
                   <td>
                     <div className={styles.hover}>
-                      <FontAwesomeIcon icon={faEdit} />
+                      <FontAwesomeIcon 
+                        icon={faEdit} 
+                        onClick={() => handleEdit(product)}
+                      />
                     </div>
                   </td>
                   <td>
