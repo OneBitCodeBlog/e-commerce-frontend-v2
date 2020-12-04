@@ -19,6 +19,9 @@ import { useSelector, useDispatch } from "react-redux";
 import UrlService from '../../../../util/UrlService';
 import Product from '../../../../dtos/Product';
 
+import { setProductToEdit } from '../../../../store/modules/admin/product/reducer';
+import { useRouter } from 'next/router';
+
 const defaultUrl = '/admin/v1/products';
 
 const List: React.FC = () => {
@@ -26,10 +29,10 @@ const List: React.FC = () => {
   const [url, setUrl] = useState(defaultUrl);
   const [productToRemove, setProductToRemove] = useState(0);
 
-
   const search = useSelector(state => state.search);
   const currentPage = useSelector(state => state.pagination.currentPage);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { data, error, mutate } = useSWR(url, ProductsService.index);
 
@@ -60,7 +63,8 @@ const List: React.FC = () => {
   }
 
   const handleEdit = (product: Product): void => {
-    
+    dispatch(setProductToEdit(product));
+    router.push('/Admin/Products/Edit');
   }
 
   if (error) {

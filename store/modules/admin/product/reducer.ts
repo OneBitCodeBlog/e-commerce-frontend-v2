@@ -15,5 +15,5 @@ const productReducer = createSlice({
   }
 })
 
-const { setProductToEdit, clearProductToEdit } = productReducer.actions;
+export const { setProductToEdit, clearProductToEdit } = productReducer.actions;
 export default productReducer.reducer;
