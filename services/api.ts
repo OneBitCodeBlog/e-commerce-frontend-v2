@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import ApiData from '../dtos/ApiData';
+import Router from 'next/router';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000'
@@ -29,6 +30,11 @@ api.interceptors.response.use(res => {
   }
 
   return res;
+}, err => {
+  // redirect para o login caso não tenha direito de acesso ao recurso da api
+  if (err.response && err.response.status === 401) {
+    Router.push('/Auth/Login');
+  }
 })
 
 // Intercetpor de request

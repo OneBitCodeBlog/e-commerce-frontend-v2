@@ -12,6 +12,10 @@ const ProductsService = {
     return api.get<IProductsIndexData>(url).then(response => response.data);
   },
 
+  create: (product: FormData) => {
+    return api.post<void>('/admin/v1/products', product);
+  },
+
   delete: (id: number) => {
     return api.delete<void>(`/admin/v1/products/${id}`);
   }
