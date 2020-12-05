@@ -3,7 +3,6 @@ import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
 import ProductForm from '../../../../components/Admin/ProductForm';
-import ProductService from '../../../../services/products';
 
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';

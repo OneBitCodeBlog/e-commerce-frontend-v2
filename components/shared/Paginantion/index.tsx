@@ -14,7 +14,7 @@ const Pagination: React.FunctionComponent<Meta> = ({ page, length, total, total_
 
   useEffect(() => {
     dispatch(setCurrentPage(page));
-  }, [page])
+  }, [])
 
   useEffect(() => {
     setPagination(PaginationService.execute(total_pages, page));

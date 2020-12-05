@@ -29,7 +29,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
   const [releaseDate, setReleaseDate] = useState('');
   const [developer, setDeveloper] = useState('');
 
-  const [systemRequirement, setSystemRequirement] = useState(0);
+  const [systemRequirement, setSystemRequirement] = useState(1);
 
 
   // length=999 para pegar 999 categorias e 999 requerimentos de sistema
@@ -39,7 +39,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
   
   const router = useRouter();
 
-  const handleFormSubmit = async (evt: React.FormEvent): Promise<void> => {
+  const handleFormSubmit = (evt: React.FormEvent): void => {
     evt.preventDefault();
 
     const formData = new FormData();

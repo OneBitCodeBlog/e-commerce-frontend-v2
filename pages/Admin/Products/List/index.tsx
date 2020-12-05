@@ -36,8 +36,6 @@ const List: React.FC = () => {
 
   const { data, error, mutate } = useSWR(url, ProductsService.index);
 
-  console.log(data)
-
   useEffect(() => {
     setUrl(
       defaultUrl +

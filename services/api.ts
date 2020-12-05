@@ -1,22 +1,20 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Cookie from 'js-cookie';
 import ApiData from '../dtos/ApiData';
+import ApiResponseError from '../dtos/ApiReponseError';
+
 import Router from 'next/router';
+import { toast } from 'react-toastify';
+
+
 
 const api = axios.create({
   baseURL: 'http://localhost:3000'
 });
 
-// Interceptor de resposta
-// Toda vez que o axios realizar uma request e tiver uma resposta, esse código
-// será executado antes de devolver o response ao fluxo normal do código.
-// Para cada resposta, checamos se existem os headers que são necessários para
-// realizar a autenticação na api.
-// Se os mesmos existirem, criamos um objeto chamado apiData, setamos ele como
-// header padrão no objeto api e ainda, salvamos ele nos cookies do browser
-// *res => é a response que será devolvida pela requisição do axios 
-api.interceptors.response.use(res => {
-  if(res.headers['access-token']) {
+// função que que seta os de autênticação
+function setHeaders(res: AxiosResponse<any>) {
+  if(res.headers['access-token'] && res.headers['access-token'] !== '') {
     const apiData: ApiData = {
       'access-token': res.headers['access-token'],
       client: res.headers.client,
@@ -28,14 +26,54 @@ api.interceptors.response.use(res => {
     api.defaults.headers = apiData;
     Cookie.set('@api-data', apiData);
   }
+}
 
+// Interceptor de resposta
+// Toda vez que o axios realizar uma request e tiver uma resposta, esse código
+// será executado antes de devolver o response ao fluxo normal do código.
+// Para cada resposta, checamos se existem os headers que são necessários para
+// realizar a autenticação na api.
+// Se os mesmos existirem, criamos um objeto chamado apiData, setamos ele como
+// header padrão no objeto api e ainda, salvamos ele nos cookies do browser
+// *res => é a response que será devolvida pela requisição do axios 
+api.interceptors.response.use(res => {
+  setHeaders(res);
   return res;
-}, err => {
+}
+, err => {
+  if (err.response) {
+    // setando os headers para authenticação
+    setHeaders(err.response);
+
+    const data = err.response.data;
+
+    // se existirem erros
+    if (data && data.errors && data.errors.fields) {
+      const errors = data.errors as ApiResponseError;
+
+      // pegando o nome dos campos com erros
+      const fieldsName = Object.keys(errors.fields)
+      
+      // para cada campo, fazendo um join nas mensagens de erro
+      // e disparando um toast de erro para cada campo
+      fieldsName.forEach(error => {
+        toast.error(error + ': ' + errors.fields[error].join(`, `))
+      })
+
+      // registrando no console os erros
+      console.log('errors', errors);
+    }
+  }
+
   // redirect para o login caso não tenha direito de acesso ao recurso da api
   if (err.response && err.response.status === 401) {
     Router.push('/Auth/Login');
   }
-})
+
+  // o err tem que ser jogado para que o mesmo seja tratado pelo try/catch
+  // que origiou o erro.
+  throw err;
+});
 
 // Intercetpor de request
 // Toda vez que o axios realizar um request, antes do mesmo enviar a requisição,
