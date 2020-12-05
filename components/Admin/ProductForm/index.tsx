@@ -8,6 +8,7 @@ import ProductImage from './ProductImage';
 import { useRouter } from 'next/router';
 import useSwr from 'swr';
 import CategoriesService from '../../../services/categories';
+import SystemRequirementsService from '../../../services/systemRequirements';
 
 import { toast } from 'react-toastify';
 interface ProductFormProps {
@@ -28,11 +29,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
   const [releaseDate, setReleaseDate] = useState('');
   const [developer, setDeveloper] = useState('');
 
-  const [systemRequirements, setSystemRequirements] = useState(0);
+  const [systemRequirement, setSystemRequirement] = useState(0);
 
 
-  // length=999 para pegar 999 categorias
+  // length=999 para pegar 999 categorias e 999 requerimentos de sistema
   const { data, error } = useSwr('/admin/v1/categories?length=999', CategoriesService.index);
+  const { data: systemRequirementsData, error: systemRequirementsError } = 
+    useSwr('/admin/v1/system_requirements?length=999', SystemRequirementsService.index);
+  
   const router = useRouter();
 
   const handleFormSubmit = async (evt: React.FormEvent): Promise<void> => {
@@ -42,15 +46,22 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
     formData.append('product[id]', id.toString());
     formData.append('product[name]', name);
-    formData.append('product[status]', status);
     formData.append('product[description]', description);
-    formData.append('product[image]', image);
     formData.append('product[category_ids]', JSON.stringify(categories));
-    formData.append('product[productable]', 'game');
-    formData.append('product[price]', price.toString());
+    
     formData.append('product[mode]', mode);
-    formData.append('product[release_date]', releaseDate);
     formData.append('product[developer]', developer);
+    formData.append('product[release_date]', releaseDate);
+    formData.append('product[system_requirement_id]', systemRequirement.toString())
+
+    formData.append('product[price]', price.toString());
+    formData.append('product[status]', status);
+
+    formData.append('product[productable]', 'game');
+
+    if (image) {
+      formData.append('product[image]', image);
+    }
 
     handleSubmit(formData);
   }
@@ -67,8 +78,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
       }
   }
 
-  if (error) {
-    toast.error('Ocorreu um erro ao obter as categorias, tente novamente.');
+  if (error || systemRequirementsError) {
+    toast.error('Ocorreu um erro ao obter as categorias/requisitos de sistema, tente novamente.');
     console.log(error);
   }
 
@@ -104,7 +115,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                 <Form.Group className="p-2">
                   <Form.Label>Código</Form.Label>
                   <Form.Control
-                    readOnly
                     type="text"
                     placeholder="Digite o ID"
                     className={styles.secundary_input}
@@ -150,8 +160,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                     required
                   >
                     {
-                      data && data.categories &&
-                      data.categories.map(category => (
+                      data?.categories.map(category => (
                         <option 
                           value={category.id} 
                           key={category.id}
@@ -230,15 +239,25 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                   <Form.Control
                     as="select"
                     className={styles.secundary_input}
-                    defaultValue={systemRequirements}
+                    defaultValue={systemRequirement}
                     onChange={
                       (evt: React.ChangeEvent<HTMLSelectElement>) =>
-                        setSystemRequirements(Number(evt.target.value))
+                        setSystemRequirement(Number(evt.target.value))
                     }
                     required
                   >
-                    <option value="available">Disponível</option>
-                    <option value="unvailable">Indisponível</option>
+                    {
+                      systemRequirementsData?.system_requirements.map(
+                          systemRequirement => (
+                            <option 
+                              value={systemRequirement.id}
+                              key={systemRequirement.id}
+                            >
+                              {systemRequirement.name}
+                            </option>
+                          )
+                        )
+                    }
                   </Form.Control>
                 </Form.Group>
               </Col>

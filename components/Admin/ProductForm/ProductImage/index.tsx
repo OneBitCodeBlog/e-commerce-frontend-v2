@@ -44,6 +44,7 @@ const ProductImage: React.FC<ProductImageProps> = ({ setImage }) => {
             (evt: React.ChangeEvent<HTMLInputElement>) => 
               handleSetImage(evt)
           }
+          required
         />
       </label>
 

@@ -31,3 +31,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/* alterando a cor do ícone do calendário para branco */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  transition: filter 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(1);
+}
