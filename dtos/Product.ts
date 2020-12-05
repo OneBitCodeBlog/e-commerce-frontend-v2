@@ -1,4 +1,5 @@
 import Category from './Category';
+import SystemRequirement from './SystemRequirement';
 
 export default interface Product {
   id: number;
@@ -8,5 +9,9 @@ export default interface Product {
   status: string;
   image_url: string;
   productable: string;
-  categories: Category[]
+  mode: string;
+  developer: string;
+  release_date: string;
+  categories: Category[];
+  system_requirement: SystemRequirement;
 };

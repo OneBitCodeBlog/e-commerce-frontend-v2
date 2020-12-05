@@ -1,4 +1,4 @@
-import { useRef, useState, Dispatch, SetStateAction } from 'react';
+import { useRef, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { Col } from 'react-bootstrap';
 import { faArrowUp, faTrash } from '@fortawesome/free-solid-svg-icons';
 import StyledButton from '../../../shared/StyledButton';
@@ -7,18 +7,31 @@ import styles from '../../../../styles/ProductForm.module.css';
 
 interface ProductImageProps {
   setImage: Dispatch<SetStateAction<File>>;
+  productImage: string;
 }
 
-const ProductImage: React.FC<ProductImageProps> = ({ setImage }) => {
+const ProductImage: React.FC<ProductImageProps> = ({ setImage, productImage }) => {
   const [imageToShow, setImageToShow] = useState('/assets/product-image.png');
   const imageInputRef = useRef(null);
 
+  // se for uma edição e imagem do produto
+  // existir, a imagem será alterada para a imagem do produto
+  useEffect (() => {
+    if (productImage) {
+      setImageToShow(productImage);
+    }
+  }, [productImage])
+
+  // utilizando um ref para simular o click do botão
+  // do input type="file" quando o botão atualizar é clicado
   const handleUpdateImage = (): void => {
     if (imageInputRef) {
       imageInputRef.current.click();
     }
   }
 
+  // pegando a imagem que foi selecionada, setando ela no estado do componente
+  // pai e criando uma url para que a mesma seja exibida na tela
   const handleSetImage = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const file = evt.target.files[0];
 
@@ -44,7 +57,6 @@ const ProductImage: React.FC<ProductImageProps> = ({ setImage }) => {
             (evt: React.ChangeEvent<HTMLInputElement>) => 
               handleSetImage(evt)
           }
-          required
         />
       </label>
 

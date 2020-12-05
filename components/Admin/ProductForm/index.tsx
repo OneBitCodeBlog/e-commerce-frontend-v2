@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 import { faTimes, faGamepad } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../../styles/AdminPanel.module.css';
@@ -11,6 +11,10 @@ import CategoriesService from '../../../services/categories';
 import SystemRequirementsService from '../../../services/systemRequirements';
 
 import { toast } from 'react-toastify';
+
+import { useSelector } from 'react-redux';
+import Product from '../../../dtos/Product';
+
 interface ProductFormProps {
   handleSubmit: (product: FormData) => Promise<void>;
   action?: string;
@@ -31,6 +35,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
   const [systemRequirement, setSystemRequirement] = useState(1);
 
+  const product: Product = useSelector(state => state.product);
 
   // length=999 para pegar 999 categorias e 999 requerimentos de sistema
   const { data, error } = useSwr('/admin/v1/categories?length=999', CategoriesService.index);
@@ -38,6 +43,27 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
     useSwr('/admin/v1/system_requirements?length=999', SystemRequirementsService.index);
   
   const router = useRouter();
+
+  useEffect (() => {
+    if (product && router.pathname.includes('Edit')) {
+      setId(product.id);
+      setName(product.name);
+      setDescription(product.description);
+      setDeveloper(product.developer);
+      
+      setPrice(product.price);
+      setMode(product.mode);
+      setStatus(product.status);
+
+      // separando a data no T e pegando apenas o valor da data
+      // '2020-12-31T00:00:000Z'
+      setReleaseDate(product.release_date.split('T')[0]);
+
+      // se o system_requirement ou o system_requirement.id 
+      // não existitem ou forem null ele irá atribuir 1
+      setSystemRequirement(product?.system_requirement?.id ?? 1);
+    }
+  }, [product])
 
   const handleFormSubmit = (evt: React.FormEvent): void => {
     evt.preventDefault();
@@ -90,6 +116,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
           <ProductImage
             setImage={setImage}
+            productImage={product?.image_url}
           />
 
           <Col lg={8}>
@@ -155,8 +182,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                   <Form.Control 
                     as="select" 
                     className={styles.secundary_input}
-                    multiple
                     onChange={handleCategoriesSelect}
+                    multiple
                     required
                   >
                     {
@@ -181,7 +208,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                   <Form.Control
                     as="select"
                     className={styles.secundary_input}
-                    defaultValue={mode}
+                    value={mode}
                     onChange={
                       (evt: React.ChangeEvent<HTMLSelectElement>) =>
                         setMode(evt.target.value)
@@ -287,7 +314,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                   <Form.Control
                     as="select"
                     className={styles.secundary_input}
-                    defaultValue={status}
+                    value={status}
                     onChange={
                       (evt: React.ChangeEvent<HTMLSelectElement>) =>
                         setStatus(evt.target.value)
