@@ -104,7 +104,7 @@ const List: React.FC = () => {
                       product.categories.map(
                         (category, index) => 
                           `${ 
-                            category + 
+                            category.name + 
                             (index === product.categories.length - 1 ? '' : ', ')
                           }`
                       )

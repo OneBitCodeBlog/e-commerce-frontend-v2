@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { Col } from 'react-bootstrap';
-import { faArrowUp, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import StyledButton from '../../../shared/StyledButton';
 
 import styles from '../../../../styles/ProductForm.module.css';
@@ -41,22 +41,28 @@ const ProductImage: React.FC<ProductImageProps> = ({ setImage, productImage }) =
 
   return (
     <Col lg={4}>
-      <img 
-        src={imageToShow} 
-        alt="Product image" 
-        className={styles.image}
-      />
+      <label 
+        htmlFor="image"
+        className={styles.image_label}
+      >
 
-      <label htmlFor="image">
+        <img 
+          src={imageToShow} 
+          alt="Product image" 
+          className={styles.image}
+        />
+
         <input 
           type="file"
-          id="image" 
+          id="image"
+          name="product_image"
           hidden
           ref={imageInputRef}
           onChange={
             (evt: React.ChangeEvent<HTMLInputElement>) => 
               handleSetImage(evt)
           }
+          required
         />
       </label>
 
@@ -66,12 +72,6 @@ const ProductImage: React.FC<ProductImageProps> = ({ setImage, productImage }) =
           action={"Atualizar"} 
           type_button="blue" 
           onClick={handleUpdateImage}
-        />
-
-        <StyledButton 
-          icon={faTrash} 
-          action={"Excluir"} 
-          type_button="red" 
         />
       </div>
     </Col>

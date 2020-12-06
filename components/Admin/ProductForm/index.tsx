@@ -46,22 +46,26 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
   useEffect (() => {
     if (product && router.pathname.includes('Edit')) {
-      setId(product.id);
       setName(product.name);
+      setId(product.id);
       setDescription(product.description);
-      setDeveloper(product.developer);
-      
-      setPrice(product.price);
-      setMode(product.mode);
-      setStatus(product.status);
 
+      setCategories(product.categories.map(category => category.id));
+
+      setMode(product.mode);      
+      setDeveloper(product.developer);
+
+            
       // separando a data no T e pegando apenas o valor da data
       // '2020-12-31T00:00:000Z'
       setReleaseDate(product.release_date.split('T')[0]);
-
+      
       // se o system_requirement ou o system_requirement.id 
       // não existitem ou forem null ele irá atribuir 1
       setSystemRequirement(product?.system_requirement?.id ?? 1);
+
+      setPrice(product.price);
+      setStatus(product.status);
     }
   }, [product])
 
@@ -121,210 +125,190 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
           <Col lg={8}>
             <Form.Row>
-              <Col md={6} sm={12}>
-                <Form.Group className="p-2">
-                  <Form.Label>Nome</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Digite o nome do produto"
-                    className={styles.secundary_input}
-                    value={name}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) =>
-                        setName(evt.target.value)
-                    }
-                    required
-                  />
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Nome</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Digite o nome do produto"
+                  className={styles.secundary_input}
+                  value={name}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLInputElement>) =>
+                      setName(evt.target.value)
+                  }
+                  required
+                />
+              </Form.Group>
 
-              <Col md={6} sm={12}>
-                <Form.Group className="p-2">
-                  <Form.Label>Código</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Digite o ID"
-                    className={styles.secundary_input}
-                    value={id}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) =>
-                        setId(Number(evt.target.value))
-                    }
-                  />
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Código</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Digite o ID"
+                  className={styles.secundary_input}
+                  value={id}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLInputElement>) =>
+                      setId(Number(evt.target.value))
+                  }
+                />
+              </Form.Group>
             </Form.Row>
 
             <Form.Row>
-              <Col sm={12}>
-                <Form.Group className="p-2">
+              <Form.Group as={Col} sm={12} className="p-2">
                 <Form.Label>Descrição</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    type="text"
-                    placeholder="Digite a descrição do produto"
-                    className={styles.secundary_input}
-                    value={description}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) =>
-                        setDescription(evt.target.value)
-                    }
-                    required
-                  />
-                </Form.Group>
-              </Col>
+                <Form.Control
+                  as="textarea"
+                  type="text"
+                  placeholder="Digite a descrição do produto"
+                  className={styles.secundary_input}
+                  value={description}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLInputElement>) =>
+                      setDescription(evt.target.value)
+                  }
+                  required
+                />
+              </Form.Group>
             </Form.Row>
 
             <Form.Row>
-              <Col md={12} sm={12}>
-                <Form.Group className="p-2">
-                  <Form.Label>Categorias</Form.Label>
-                  <Form.Control 
-                    as="select" 
-                    className={styles.secundary_input}
-                    onChange={handleCategoriesSelect}
-                    multiple
-                    required
-                  >
-                    {
-                      data?.categories.map(category => (
-                        <option 
-                          value={category.id} 
-                          key={category.id}
-                        >
-                          {category.name}
-                        </option>
-                      ))
-                    }
-                  </Form.Control>
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} sm={12} className="p-2">
+                <Form.Label>Categorias</Form.Label>
+                <Form.Control 
+                  as="select" 
+                  className={styles.secundary_input}
+                  onChange={handleCategoriesSelect}
+                  value={categories}
+                  multiple
+                  required
+                >
+                  {
+                    data?.categories.map(category => (
+                      <option 
+                        value={category.id} 
+                        key={category.id}
+                      >
+                        {category.name}
+                      </option>
+                    ))
+                  }
+                </Form.Control>
+              </Form.Group>
             </Form.Row>
 
             <Form.Row>
-              <Col md={6} sm={12}>
-                <Form.Group  className="p-2">
-                  <Form.Label>Modo</Form.Label>
-                  <Form.Control
-                    as="select"
-                    className={styles.secundary_input}
-                    value={mode}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLSelectElement>) =>
-                        setMode(evt.target.value)
-                    }
-                  >
-                    <option value="pve">PVE</option>
-                    <option value="pvp">PVP</option>
-                    <option value="both">Ambos</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Modo</Form.Label>
+                <Form.Control
+                  as="select"
+                  className={styles.secundary_input}
+                  value={mode}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLSelectElement>) =>
+                      setMode(evt.target.value)
+                  }
+                >
+                  <option value="pve">PVE</option>
+                  <option value="pvp">PVP</option>
+                  <option value="both">Ambos</option>
+                </Form.Control>
+              </Form.Group>
 
-              <Col md={6} sm={12}>
-                <Form.Group  className="p-2">
-                  <Form.Label>Desenvolvedora</Form.Label>
-                  <Form.Control
-                    type="text"
-                    className={styles.secundary_input}
-                    defaultValue={developer}
-                    placeholder="Digite o nome da desenvolvedora"
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLSelectElement>) =>
-                        setDeveloper(evt.target.value)
-                    }
-                    required
-                  >
-                  </Form.Control>
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Desenvolvedora</Form.Label>
+                <Form.Control
+                  type="text"
+                  className={styles.secundary_input}
+                  defaultValue={developer}
+                  placeholder="Digite o nome da desenvolvedora"
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLSelectElement>) =>
+                      setDeveloper(evt.target.value)
+                  }
+                  required
+                >
+                </Form.Control>
+              </Form.Group>
             </Form.Row>
 
             <Form.Row>
-              <Col md={6} sm={12}>
-                <Form.Group  className="p-2">
-                  <Form.Label>Data de Lançamento</Form.Label>
-                  <Form.Control
-                    type="date"
-                    className={styles.secundary_input}
-                    defaultValue={releaseDate}
-                    placeholder="Digite o nome da desenvolvedora"
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLSelectElement>) =>
-                        setReleaseDate(evt.target.value)
-                    }
-                    required
-                  >
-                  </Form.Control>
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Data de Lançamento</Form.Label>
+                <Form.Control
+                  type="date"
+                  className={styles.secundary_input}
+                  defaultValue={releaseDate}
+                  placeholder="Digite o nome da desenvolvedora"
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLSelectElement>) =>
+                      setReleaseDate(evt.target.value)
+                  }
+                  required
+                >
+                </Form.Control>
+              </Form.Group>
 
-
-              <Col md={6} sm={12}>
-                <Form.Group  className="p-2">
-                  <Form.Label>Requerimentos do Sistema</Form.Label>
-                  <Form.Control
-                    as="select"
-                    className={styles.secundary_input}
-                    defaultValue={systemRequirement}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLSelectElement>) =>
-                        setSystemRequirement(Number(evt.target.value))
-                    }
-                    required
-                  >
-                    {
-                      systemRequirementsData?.system_requirements.map(
-                          systemRequirement => (
-                            <option 
-                              value={systemRequirement.id}
-                              key={systemRequirement.id}
-                            >
-                              {systemRequirement.name}
-                            </option>
-                          )
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Requerimentos do Sistema</Form.Label>
+                <Form.Control
+                  as="select"
+                  className={styles.secundary_input}
+                  value={systemRequirement}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLSelectElement>) =>
+                      setSystemRequirement(Number(evt.target.value))
+                  }
+                  required
+                >
+                  {
+                    systemRequirementsData?.system_requirements.map(
+                        systemRequirement => (
+                          <option 
+                            value={systemRequirement.id}
+                            key={systemRequirement.id}
+                          >
+                            {systemRequirement.name}
+                          </option>
                         )
-                    }
-                  </Form.Control>
-                </Form.Group>
-              </Col>
+                      )
+                  }
+                </Form.Control>
+              </Form.Group>
             </Form.Row>
 
             <Form.Row>              
-              <Col md={6} sm={12}>
-                <Form.Group className="p-2">
-                  <Form.Label>Preço</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Digite o ID"
-                    className={styles.secundary_input}
-                    value={price}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLInputElement>) =>
-                        setPrice(Number(evt.target.value))
-                    }
-                    required
-                  />
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Preço</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Digite o ID"
+                  className={styles.secundary_input}
+                  value={price}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLInputElement>) =>
+                      setPrice(Number(evt.target.value))
+                  }
+                  required
+                />
+              </Form.Group>
 
-              <Col md={6} sm={12}>
-                <Form.Group  className="p-2">
-                  <Form.Label>Status</Form.Label>
-                  <Form.Control
-                    as="select"
-                    className={styles.secundary_input}
-                    value={status}
-                    onChange={
-                      (evt: React.ChangeEvent<HTMLSelectElement>) =>
-                        setStatus(evt.target.value)
-                    }
-                  >
-                    <option value="available">Disponível</option>
-                    <option value="unavailable">Indisponível</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
+              <Form.Group as={Col} md={6} sm={12} className="p-2">
+                <Form.Label>Status</Form.Label>
+                <Form.Control
+                  as="select"
+                  className={styles.secundary_input}
+                  value={status}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLSelectElement>) =>
+                      setStatus(evt.target.value)
+                  }
+                >
+                  <option value="available">Disponível</option>
+                  <option value="unavailable">Indisponível</option>
+                </Form.Control>
+              </Form.Group>
 
             </Form.Row>
 

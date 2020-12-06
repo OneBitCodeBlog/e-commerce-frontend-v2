@@ -8,7 +8,10 @@ import StyledButton from '../../StyledButton';
 import Link from 'next/link';
 
 import { useDispatch } from 'react-redux';
-import { setSearch, clearSearch } from '../../../../store/modules/admin/shared/search/reducer';
+import { 
+  setSearch as setSearchRedux, 
+  clearSearch 
+} from '../../../../store/modules/admin/shared/search/reducer';
 
 interface SearchAndIcon {
   icon: IconProp;
@@ -16,7 +19,7 @@ interface SearchAndIcon {
 }
 
 const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [search, setSearch] = useState('');
   const dispatch = useDispatch();
 
   // limpando a pesquisa quando o component for renderizado
@@ -24,8 +27,8 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
     dispatch(clearSearch());
   }, [])
 
-  const search = () => {
-    dispatch(setSearch(inputValue));
+  const handleSearch = (): void => {
+    dispatch(setSearchRedux(search));
   }
 
   return (
@@ -37,17 +40,17 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
               <FormControl 
                 placeholder="Pesquisar usuário" 
                 className={styles.input} 
-                value={inputValue}
+                value={search}
                 onChange={
                   (evt: React.ChangeEvent<HTMLInputElement>) => {
-                    setInputValue(evt.target.value);
+                    setSearch(evt.target.value);
                   }
                 }
 
                 onKeyPress={
                   (evt: React.KeyboardEvent<HTMLInputElement>) => {
                     if (evt.key.toLowerCase() === 'enter') {
-                      search()
+                      handleSearch()
                     }
                   }
                 }
@@ -62,7 +65,7 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
               size="lg" 
               color="var(--color-gray-light)" 
               className="float-left" 
-              onClick={search}
+              onClick={handleSearch}
             />
           </Col>
         </Row>
