@@ -35,6 +35,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
   const [systemRequirement, setSystemRequirement] = useState(1);
 
+  const [productImage, setProductImage] = useState('');
+
   const product: Product = useSelector(state => state.product);
 
   // length=999 para pegar 999 categorias e 999 requerimentos de sistema
@@ -66,6 +68,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
       setPrice(product.price);
       setStatus(product.status);
+
+      setProductImage(product?.image_url);
     }
   }, [product])
 
@@ -120,7 +124,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
           <ProductImage
             setImage={setImage}
-            productImage={product?.image_url}
+            productImage={productImage}
           />
 
           <Col lg={8}>

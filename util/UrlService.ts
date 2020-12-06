@@ -1,12 +1,12 @@
 interface IUrlServiceRequest {
-  currentPage: number;
+  page: string | string[];
   search?: string;
 }
 
 const UrlService = {
-  execute({ currentPage, search }: IUrlServiceRequest): string {
+  execute({ page, search }: IUrlServiceRequest): string {
     return `${search !== '' ? `?search[name]=${search}` : ''}` +
-      `${search !== '' ? '&' : '?'}page=${currentPage}`;
+      `${search !== '' ? '&' : '?'}page=${page}`;
   }
 }
 

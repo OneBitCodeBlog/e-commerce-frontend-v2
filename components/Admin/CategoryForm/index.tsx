@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { Form } from 'react-bootstrap';
-import { faUser, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faGhost, faTimes } from '@fortawesome/free-solid-svg-icons';
 import StyledButton from '../../../components/shared/StyledButton';
 
 import { useRouter } from 'next/router';
@@ -54,7 +54,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ handleSubmit, action = 'Adi
 
         <div className={styles.details_button}>
             <StyledButton 
-                icon={faUser} 
+                icon={faGhost} 
                 action={action} 
                 type_button="blue" 
                 type="submit"

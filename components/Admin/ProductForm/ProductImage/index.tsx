@@ -17,6 +17,7 @@ const ProductImage: React.FC<ProductImageProps> = ({ setImage, productImage }) =
   // se for uma edição e imagem do produto
   // existir, a imagem será alterada para a imagem do produto
   useEffect (() => {
+    console.log(productImage)
     if (productImage) {
       setImageToShow(productImage);
     }
@@ -62,7 +63,6 @@ const ProductImage: React.FC<ProductImageProps> = ({ setImage, productImage }) =
             (evt: React.ChangeEvent<HTMLInputElement>) => 
               handleSetImage(evt)
           }
-          required
         />
       </label>
 

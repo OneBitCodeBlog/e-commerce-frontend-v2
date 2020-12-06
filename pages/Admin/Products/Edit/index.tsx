@@ -26,7 +26,7 @@ const Edit: React.FC = () => {
       
       // limpando o produto para edição do redux
       dispatch(clearProductToEdit());
-      router.push('/Admin/Products/List')
+      router.back();
     } catch (err) {
       toast.error('Ocorreu um erro ao atualizar o produto, tente novamente.');
       console.log(err);

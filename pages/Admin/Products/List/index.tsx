@@ -30,7 +30,6 @@ const List: React.FC = () => {
   const [productToRemove, setProductToRemove] = useState(0);
 
   const search = useSelector(state => state.search);
-  const currentPage = useSelector(state => state.pagination.currentPage);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -39,9 +38,9 @@ const List: React.FC = () => {
   useEffect(() => {
     setUrl(
       defaultUrl +
-      UrlService.execute({ currentPage, search })
+      UrlService.execute({ page: router.query.page, search })
     )
-  }, [search, currentPage]);
+  }, [search, router.query.page]);
 
   const handleShow = (id: number) => {
     setShow(true);
@@ -55,6 +54,7 @@ const List: React.FC = () => {
 
     try {
       await ProductsService.delete(productToRemove);
+      toast.info('Produto removido com sucesso!')
       mutate();
     } catch (err) {
       toast.error('Ocorreu um erro ao remover o produto, tente novamente.')

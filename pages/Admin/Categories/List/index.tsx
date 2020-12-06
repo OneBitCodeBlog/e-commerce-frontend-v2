@@ -30,7 +30,6 @@ const List: React.FC = () => {
 
   const { data, error, mutate } = useSWR(url, CategoriesService.index)
   const search = useSelector(state => state.search);
-  const currentPage = useSelector(state => state.pagination.currentPage);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -40,9 +39,9 @@ const List: React.FC = () => {
   useEffect(() => {
     setUrl(
       defaultUrl +
-      UrlService.execute({ currentPage, search })
+      UrlService.execute({ page: router.query.page, search })
     )
-  }, [search, currentPage]);
+  }, [search, router.query.page]);
 
   const handleShow = (id: number): void => {
     setShow(true);

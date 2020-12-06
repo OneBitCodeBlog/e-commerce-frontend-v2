@@ -13,10 +13,15 @@ const New: React.FC = () => {
 
   const handleSubmit = async (product: FormData): Promise<void>  => {
     try {
+      if (!product.get('product[image]')) {
+        toast.info('A imagem do produto é obrigatória!');
+        return;
+      }
+
       await ProductsService.create(product);
 
       toast.info('Produto salvo com sucesso!');
-      router.push('/Admin/Products/List')
+      router.back();
     } catch (err) {
       toast.error('Ocorreu um erro ao salvar o produto, tente novamente.');
       console.log(err);
