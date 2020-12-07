@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,70 +9,125 @@ import styles from '../../../../styles/AdminPanel.module.css';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
+import useSwr from 'swr';
+import UrlService from '../../../../util/UrlService';
+
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+
+import SystemRequirementsService from '../../../../services/systemRequirements';
+import { toast } from 'react-toastify';
+
+import NoData from '../../../../components/shared/NoData';
+import SystemRequirement from '../../../../dtos/SystemRequirement';
+import { setSystemRequirementToEdit } from '../../../../store/modules/admin/systemRequirement/reducer';
+
+const defaultUrl = '/admin/v1/system_requirements';
+
 const List: React.FC = () => {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
+  const [url, setUrl] = useState(defaultUrl);
+  const [systemRequirementToRemove, setSystemRequirementToRemove] = useState(0);
 
-    return (
-        <AdminComponent>
-            <TitleAdminPanel title="Requisitos" path="Dashboard > Requisitos" icon={faHeadset} />
+  const search = useSelector(state => state.search);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-            <AdminDeleteModal handleClose={handleClose} show={show} target="cupom" />
+  const { data, error, mutate } = useSwr(url, SystemRequirementsService.index);
 
-            <AdminListTable first_title="Nome" second_title="Sistema Operacional" third_title="Armazenamento" fourth_title="Processador" fifth_title="Memória" sixth_title="Placa de vídeo">
-                <tr className={styles.table_line}>
-                    <td>Básico</td>
-                    <td>Windows</td>
-                    <td>4GB</td>
-                    <td>4Gz Intel Core 7</td>
-                    <td>4GB</td>
-                    <td>Nvidia Geforce</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
+  useEffect(() => {
+    setUrl(
+      defaultUrl + 
+      UrlService.execute({ page: router.query.page, search })
+    );
+  }, [search, router.query.page])
+
+  const handleShow = (id: number): void => {
+    setShow(true)
+    setSystemRequirementToRemove(id);
+  }
+
+  const handleClose = async (success: boolean): Promise<void> => {
+    setShow(false);
+
+    if (!success) return;
+
+    try {
+      await SystemRequirementsService.delete(systemRequirementToRemove);
+      toast.info('Requisito de sistema removido com sucesso!');
+      mutate();
+    } catch (err) {
+      toast.error('Ocorreu um erro ao remover o requisito de sistema, tente novamente.');
+      console.log(err);
+    }
+  }
+
+  const handleEdit = (systemRequirement: SystemRequirement): void => {
+    dispatch(setSystemRequirementToEdit(systemRequirement));
+    router.push('/Admin/SystemRequirements/Edit');
+  }
+
+  if (error) {
+    toast.error('Erro ao listar os requisitos de sistema');
+    console.log(error);
+  }
+
+  return (
+    <AdminComponent>
+      <TitleAdminPanel 
+        title="Requisitos" 
+        path="Dashboard > Requisitos" 
+        icon={faHeadset} 
+        newPath="/Admin/SystemRequirements/New" 
+      />
+
+      <AdminDeleteModal handleClose={handleClose} show={show} target="requisito de sistema" />
+
+      {
+        data && data.system_requirements && data.system_requirements.length > 0 ? (
+          <AdminListTable 
+            first_title="Nome" 
+            second_title="Sistema Operacional" 
+            third_title="Armazenamento" 
+            fourth_title="Processador" 
+            fifth_title="Memória" 
+            sixth_title="Placa de vídeo"
+            meta={data.meta}
+          >
+            {
+              data.system_requirements.map(system_requirement => (
+                <tr className={styles.table_line} key={system_requirement.id}>
+                  <td>{system_requirement.name}</td>
+                  <td>{system_requirement.operational_system}</td>
+                  <td>{system_requirement.storage}</td>
+                  <td>{system_requirement.processor}</td>
+                  <td>{system_requirement.memory}</td>
+                  <td>{system_requirement.video_board}</td>
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faEdit} 
+                        onClick={() => handleEdit(system_requirement)}
+                        />
+                    </div>
+                  </td>
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faTrash} 
+                        onClick={() => handleShow(system_requirement.id)} />
+                    </div>
+                  </td>
                 </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Básico</td>
-                    <td>Windows</td>
-                    <td>4GB</td>
-                    <td>4Gz Intel Core 7</td>
-                    <td>4GB</td>
-                    <td>Nvidia Geforce</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Básico</td>
-                    <td>Windows</td>
-                    <td>4GB</td>
-                    <td>4Gz Intel Core 7</td>
-                    <td>4GB</td>
-                    <td>Nvidia Geforce</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Básico</td>
-                    <td>Windows</td>
-                    <td>4GB</td>
-                    <td>4Gz Intel Core 7</td>
-                    <td>4GB</td>
-                    <td>Nvidia Geforce</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-            </AdminListTable>
-        </AdminComponent>
-    )
+              ))
+            }
+          </AdminListTable>
+        ) : (
+          <NoData />
+        )
+      }
+    </AdminComponent>
+  )
 }
 
 export default withAuthAdmin(List);
