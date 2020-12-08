@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,70 +9,130 @@ import styles from '../../../../styles/AdminPanel.module.css';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+
+import { useSelector, useDispatch } from 'react-redux';
+
+import CouponsService from '../../../../services/coupons';
+import UrlService from '../../../../util/UrlService';
+
+import useSwr from 'swr';
+import NoData from '../../../../components/shared/NoData';
+
+import { setCouponToEdit } from '../../../../store/modules/admin/coupon/reducer';
+
+import Coupon from '../../../../dtos/Coupon';
+
+const defaultUrl = '/admin/v1/coupons';
+
 const List: React.FC = () => {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
+  const [url, setUrl] = useState(defaultUrl);
+  const [couponToRemove, setCouponToRemove] = useState(0);
 
-    return (
-        <AdminComponent>
-            <TitleAdminPanel title="Cupons" path="Dashboard > Cupons" icon={faTicketAlt} />
+  const search: string = useSelector(state => state.search);
 
-            <AdminDeleteModal handleClose={handleClose} show={show} target="cupom" />
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-            <AdminListTable first_title="Nome" second_title="Código" third_title="Status" fourth_title="Valor de Desconto" fifth_title="Quantidade máxima de uso" sixth_title="Válido Até">
-                <tr className={styles.table_line}>
-                    <td>Black Friday</td>
-                    <td>#000001</td>
-                    <td>Disponível</td>
-                    <td>R$ 30,00</td>
-                    <td>2000</td>
-                    <td>25/11/2020</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
+  const { data, error, mutate } = useSwr(url, CouponsService.index);
+
+  useEffect(() => {
+    setUrl(
+      defaultUrl +
+      UrlService.execute({ page: router.query.page, search })
+    );
+  }, [search, router.query.page])
+
+  const handleShow = (id: number): void => {
+    setCouponToRemove(id);
+    setShow(true);
+  }
+
+  const handleClose = async (success: boolean): Promise<void> => {
+    setShow(false);
+
+    if (!success) return;
+
+    try {
+      await CouponsService.delete(couponToRemove);
+      toast.info('Cupom removido com sucesso!');
+      mutate();
+    } catch (err) {
+      toast.error('Erro ao remover o cupom, tente novamente.');
+      console.log(err);
+    }
+  }
+
+  const handleEdit = (coupon: Coupon): void => {
+    dispatch(setCouponToEdit(coupon));
+    router.push('/Admin/Coupons/Edit');
+  }
+
+  if (error) {
+    toast.error('Erro ao listar cupons.');
+    console.log(error);
+  }
+
+  return (
+    <AdminComponent>
+      <TitleAdminPanel 
+        title="Cupons" 
+        path="Dashboard > Cupons" 
+        icon={faTicketAlt} 
+        newPath="/Admin/Coupons/New"
+      />
+
+      <AdminDeleteModal handleClose={handleClose} show={show} target="cupom" />
+
+      {
+        data && data.coupons && data.coupons.length > 0 ? (
+          <AdminListTable 
+            first_title="Nome" 
+            second_title="Código" 
+            third_title="Status" 
+            fourth_title="Valor de Desconto" 
+            fifth_title="Quantidade máxima de uso" 
+            sixth_title="Válido Até"
+            meta={data.meta}
+          >
+            {
+              data.coupons.map(coupon => (
+                <tr className={styles.table_line} key={coupon.id}>
+                  <td>{coupon.name}</td>
+                  <td>{coupon.code}</td>
+                  <td>{coupon.status === 'inactive' ? 'Inativo' : 'Ativo'}</td>
+                  <td>{coupon.discount_value}%</td>
+                  <td>{coupon.max_use}</td>
+                  <td>{coupon.due_date.split('T')[0]}</td>
+                  
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faEdit} 
+                        onClick={() => handleEdit(coupon)}
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faTrash} 
+                        onClick={() => handleShow(coupon.id)} 
+                      />
+                    </div>
+                  </td>
                 </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Black Friday</td>
-                    <td>#000001</td>
-                    <td>Disponível</td>
-                    <td>R$ 30,00</td>
-                    <td>2000</td>
-                    <td>25/11/2020</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Black Friday</td>
-                    <td>#000001</td>
-                    <td>Disponível</td>
-                    <td>R$ 30,00</td>
-                    <td>2000</td>
-                    <td>25/11/2020</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Black Friday</td>
-                    <td>#000001</td>
-                    <td>Disponível</td>
-                    <td>R$ 30,00</td>
-                    <td>2000</td>
-                    <td>25/11/2020</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-            </AdminListTable>
-        </AdminComponent>
-    )
+              ))
+            }
+          </AdminListTable>
+        ) : (
+          <NoData />
+        )
+      }
+    </AdminComponent>
+  )
 }
 
 export default withAuthAdmin(List);
