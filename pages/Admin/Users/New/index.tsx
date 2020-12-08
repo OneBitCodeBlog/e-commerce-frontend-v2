@@ -16,6 +16,11 @@ const New: React.FC = () => {
   const router = useRouter();
 
   const handleSubmit = async (user: User): Promise<void> => {
+    if (user.password !== user.password_confirmation) {
+      toast.error('A senha e a confirmação de senha devem ser iguais!')
+      return;
+    }
+
     try {
       await UsersService.create(user);
       toast.info('Usuário salvo com sucesso!');
