@@ -92,8 +92,7 @@ const List: React.FC = () => {
             first_title="Nome" 
             second_title="Código" 
             third_title="Status" 
-            fourth_title="Valor de Desconto" 
-            fifth_title="Quantidade máxima de uso" 
+            fourth_title="Valor de Desconto"  
             sixth_title="Válido Até"
             meta={data.meta}
           >
@@ -104,7 +103,6 @@ const List: React.FC = () => {
                   <td>{coupon.code}</td>
                   <td>{coupon.status === 'inactive' ? 'Inativo' : 'Ativo'}</td>
                   <td>{coupon.discount_value}%</td>
-                  <td>{coupon.max_use}</td>
                   <td>{coupon.due_date.split('T')[0]}</td>
                   
                   <td>

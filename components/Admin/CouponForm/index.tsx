@@ -18,9 +18,8 @@ interface CouponFormProps {
 const CouponForm: React.FC<CouponFormProps> = ({ handleSubmit, action = 'Adicionar'}) => {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('active');
   const [discountValue, setDiscountValue] = useState(1);
-  const [maxUse, setMaxUse] = useState(1);
   const [dueDate, setDueDate] = useState('');
 
   const coupon = useSelector(state => state.coupon);
@@ -34,7 +33,6 @@ const CouponForm: React.FC<CouponFormProps> = ({ handleSubmit, action = 'Adicion
       setCode(coupon.code);
       setStatus(coupon.status);
       setDiscountValue(coupon.discount_value);
-      setMaxUse(coupon.max_use);
       setDueDate(coupon.due_date.split('T')[0]);
     }
   }, [coupon])
@@ -48,7 +46,6 @@ const CouponForm: React.FC<CouponFormProps> = ({ handleSubmit, action = 'Adicion
       code,
       status,
       discount_value: discountValue,
-      max_use: maxUse,
       due_date: dueDate
     });
   }
@@ -125,23 +122,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ handleSubmit, action = 'Adicion
           </Form.Row>
 
           <Form.Row>
-            <Form.Group as={Col} sm={6} xs={12} className="p-2">
-              <Form.Label>Quantidade</Form.Label>
-              <Form.Control 
-                type="number" 
-                min="1" 
-                placeholder="Digite a Quantidade" 
-                className={styles.secundary_input} 
-                value={maxUse}
-                onChange={
-                  (evt: React.ChangeEvent<HTMLInputElement>) =>
-                    setMaxUse(Number(evt.target.value))
-                }
-                required
-              />
-            </Form.Group>
-
-            <Form.Group as={Col} sm={6} xs={12} className="p-2">
+            <Form.Group as={Col} sm={12} xs={12} className="p-2">
               <Form.Label>Validade</Form.Label>
               <Form.Control 
                 type="date" 
