@@ -26,7 +26,7 @@ const Edit: React.FC = () => {
       dispatch(clearCouponToEdit());
       router.back();
     } catch (err) {
-      toast.error('Erro ao remover o cupom, tente novamente.');
+      toast.error('Erro ao atualizar o cupom, tente novamente.');
       console.log(err);
     }
   }

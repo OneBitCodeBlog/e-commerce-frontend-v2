@@ -4,6 +4,5 @@ export default interface Coupon {
   code: string;
   status: string;
   discount_value: number;
-  max_use: number;
   due_date: string;
 }
