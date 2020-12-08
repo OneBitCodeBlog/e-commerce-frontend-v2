@@ -66,7 +66,10 @@ api.interceptors.response.use(res => {
   }
 
   // redirect para o login caso não tenha direito de acesso ao recurso da api
-  if (err.response && err.response.status === 401) {
+  if (err.response && (
+      err.response.status === 401 ||
+      err.response.status === 403
+    )) {
     Router.push('/Auth/Login');
   }
 

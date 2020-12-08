@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,62 +9,124 @@ import styles from '../../../../styles/AdminPanel.module.css';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+
+import useSwr from 'swr';
+import UsersService from '../../../../services/users';
+
+import UrlService from '../../../../util/UrlService';
+
+import { toast } from 'react-toastify';
+import NoData from '../../../../components/shared/NoData';
+
+import User from '../../../../dtos/User';
+import { setUserToEdit } from '../../../../store/modules/admin/user/reducer';
+
+const defaultUrl = '/admin/v1/users';
+
 const List: React.FC = () => {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
+  const [url, setUrl] = useState(defaultUrl);
+  const [userToRemove, setUserToRemove] = useState(0);
 
-    return (
-        <AdminComponent>
-            <TitleAdminPanel title="Usuários" path="Dashboard > Usuários" icon={faUserPlus} />
+  const { data, error, mutate } = useSwr(url, UsersService.index);
 
-            <AdminDeleteModal handleClose={handleClose} show={show} target="usuário" />
+  const search = useSelector(state => state.search);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-            <AdminListTable first_title="Nome" second_title="Email" third_title="ID" fourth_title="Status">
-                <tr className={styles.table_line}>
-                    <td>Leonardo Scorza</td>
-                    <td>contato@onebitcode.com</td>
-                    <td>#000001</td>
-                    <td>Administrador</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
+  useEffect(() => {
+    setUrl(
+      defaultUrl +
+      UrlService.execute({ page: router.query.page, search })
+    );
+  }, [search, router.query.page]);
+
+  const handleShow = (id: number): void => {
+    setShow(true);
+    setUserToRemove(id);
+  }
+
+  const handleClose = async (success: boolean): Promise<void> => {
+    setShow(false);
+
+    if (!success) return;
+
+    try {
+      await UsersService.delete(userToRemove);
+      toast.info('Usuário removido com sucesso!');
+      mutate();
+    } catch (err) {
+      toast.error('Erro ao remove o usuário, tente novamente.');
+      console.log(err);
+    }
+  }
+
+  const handleEdit = (user: User): void => {
+    dispatch(setUserToEdit(user));
+    router.push('/Admin/Users/Edit');
+  }
+
+  if (error) {
+    toast.error('Erro ao listar usuários!');
+    console.log(error);
+  }
+
+  return (
+    <AdminComponent>
+      <TitleAdminPanel 
+        title="Usuários" 
+        path="Dashboard > Usuários" 
+        icon={faUserPlus} 
+        newPath="/Admin/Users/New"
+      />
+
+      <AdminDeleteModal handleClose={handleClose} show={show} target="usuário" />
+
+      {
+        data && data.users && data.users.length > 0 ? (
+          <AdminListTable 
+            first_title="Nome" 
+            second_title="Email" 
+            third_title="ID" 
+            fourth_title="Status"
+            meta={data.meta}
+          >
+            {
+              data.users.map(user => (
+                <tr className={styles.table_line} key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.id}</td>
+                  <td>{user.profile === 'admin' ? 'Administrador' : 'Cliente'}</td>
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faEdit} 
+                        onClick={() => handleEdit(user)}
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div className={styles.hover}>
+                      <FontAwesomeIcon 
+                        icon={faTrash} 
+                        onClick={() => handleShow(user.id)} 
+                      />
+                    </div>
+                  </td>
                 </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Leonardo Scorza</td>
-                    <td>contato@onebitcode.com</td>
-                    <td>#000001</td>
-                    <td>Administrador</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Leonardo Scorza</td>
-                    <td>contato@onebitcode.com</td>
-                    <td>#000001</td>
-                    <td>Administrador</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-
-                <br />
-
-                <tr className={styles.table_line}>
-                    <td>Leonardo Scorza</td>
-                    <td>contato@onebitcode.com</td>
-                    <td>#000001</td>
-                    <td>Administrador</td>
-                    <td><a href="#"><FontAwesomeIcon icon={faEdit} /></a></td>
-                    <td><a href="#"><FontAwesomeIcon icon={faTrash} onClick={handleShow} /></a></td>
-                </tr>
-            </AdminListTable>
-        </AdminComponent>
-    )
+              ))
+            }
+          </AdminListTable>
+        ) : (
+          <NoData />
+        )
+      }
+      
+    </AdminComponent>
+  )
 }
 
 export default withAuthAdmin(List);

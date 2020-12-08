@@ -1,5 +1,6 @@
 import api from './api';
 import User from '../dtos/User';
+import Meta from '../dtos/Meta';
 
 interface SignInData {
   email: string;
@@ -27,6 +28,10 @@ interface DefaultResponse {
   message: string;
 }
 
+interface IUsersIndexData {
+  users: User[],
+  meta: Meta
+}
 
 const UsersService = {
   signUp: ({ 
@@ -65,6 +70,21 @@ const UsersService = {
       reset_password_token
     }),
 
+  index(url: string) {
+    return api.get<IUsersIndexData>(url).then(response => response.data);
+  },
+
+  create(user: User) {
+    return api.post<void>('/admin/v1/users', { user });
+  },
+
+  update(user: User) {
+    return api.put(`/admin/v1/users/${user.id}`, user);
+  },
+
+  delete(id: number) {
+    return api.delete(`/admin/v1/users/${id}`);
+  }
 }
 
 export default UsersService;
