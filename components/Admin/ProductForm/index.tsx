@@ -12,8 +12,10 @@ import SystemRequirementsService from '../../../services/systemRequirements';
 
 import { toast } from 'react-toastify';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Product from '../../../dtos/Product';
+
+import { clearProductToEdit } from '../../../store/modules/admin/product/reducer';
 
 interface ProductFormProps {
   handleSubmit: (product: FormData) => Promise<void>;
@@ -45,6 +47,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
     useSwr('/admin/v1/system_requirements?length=999', SystemRequirementsService.index);
   
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect (() => {
     if (product && router.pathname.includes('Edit')) {
@@ -331,7 +334,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
             icon={faTimes}
             action={"Cancelar"}
             type_button="red"
-            onClick={() => router.back()}
+            onClick={() => {
+              // limpando a categoria para edição quando a edição é cancelada
+              // para não enviar o id caso seja um cadastro para não dar erro
+              // de chave primária
+              dispatch(clearProductToEdit());
+              router.back();
+            }}
           />
         </div>
       </Form>

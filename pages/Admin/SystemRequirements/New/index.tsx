@@ -1,64 +1,39 @@
 import React from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
-import { Form, Col } from 'react-bootstrap';
-import { faMicrochip, faTimes } from '@fortawesome/free-solid-svg-icons';
-import styles from '../../../../styles/AdminPanel.module.css';
-import StyledButton from '../../../../components/shared/StyledButton';
+
+import SystemRequirementForm from '../../../../components/Admin/SystemRequirementForm';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
+import SystemRequirement from '../../../../dtos/SystemRequirement';
+
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+
+import SystemRequirementsService from '../../../../services/systemRequirements';
 
 const New: React.FC = () => {
-    return (
-        <AdminComponent>
-            <TitleAdminPanel title="Adicionar Requisito" path="Dashboard > Requisitos > Adicionar requisito" />
+  const router = useRouter();
 
-            <div className={styles.admin_panel}>
-                <Form className={styles.new_form}>
-                    <Form.Row>
-                        <Form.Group as={Col} className="p-4">
-                            <Form.Label>Nome</Form.Label>
-                            <Form.Control type="text" placeholder="Digite o Nome" className={styles.secundary_input} />
-                        </Form.Group>
+  const handleSubmit = async (system_requirement: SystemRequirement): Promise<void> => {
+    try {
+      await SystemRequirementsService.create(system_requirement);
 
-                        <Form.Group as={Col} className="p-4">
-                            <Form.Label>Sistema Operacional</Form.Label>
-                            <Form.Control type="text" placeholder="Digite o Sistema Operacional" className={styles.secundary_input} />
-                        </Form.Group>
-                    </Form.Row>
+      toast.info('Requisito de sistema salvo com sucesso!');
+      router.back();
+    } catch (err) {
+      toast.error('Erro ao salvar o requisito de sistema, tente novamente.');
+      console.log(err);
+    }
+  }
 
-                    <Form.Row>
-                        <Form.Group as={Col} className="p-4">
-                            <Form.Label>Armazenamento</Form.Label>
-                            <Form.Control type="text" placeholder="Digite o Armazenamento" className={styles.secundary_input} />
-                        </Form.Group>
+  return (
+    <AdminComponent>
+      <TitleAdminPanel title="Adicionar Requisito" path="Dashboard > Requisitos > Adicionar requisito" />
 
-                        <Form.Group as={Col} className="p-4">
-                            <Form.Label>Processador</Form.Label>
-                            <Form.Control type="text" placeholder="Digite o Processador" className={styles.secundary_input} />
-                        </Form.Group>
-                    </Form.Row>
-
-                    <Form.Row>
-                        <Form.Group as={Col} className="p-4">
-                            <Form.Label>Memória</Form.Label>
-                            <Form.Control type="number" min="1" placeholder="Digite a Memória" className={styles.secundary_input} />
-                        </Form.Group>
-
-                        <Form.Group as={Col} className="p-4">
-                            <Form.Label>Placa de vídeo</Form.Label>
-                            <Form.Control type="date" placeholder="Digite a Placa de vídeo" className={styles.secundary_input} />
-                        </Form.Group>
-                    </Form.Row>
-                </Form>
-
-                <div className={styles.details_button}>
-                    <StyledButton icon={faMicrochip} action={"Adicionar"} type_button="blue" />
-                    <StyledButton icon={faTimes} action={"Cancelar"} type_button="red" />
-                </div>
-            </div>
-        </AdminComponent>
-    )
+      <SystemRequirementForm handleSubmit={handleSubmit}/>
+    </AdminComponent>
+  )
 }
 
 export default withAuthAdmin(New);

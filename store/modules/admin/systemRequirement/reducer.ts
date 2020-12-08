@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import SystemRequirement from '../../../../dtos/SystemRequirement';
 
 const systemRequirementReducer = createSlice({
-  name: 'system_requirement',
+  name: 'systemRequirement',
   initialState: null,
   reducers: {
     setSystemRequirementToEdit(

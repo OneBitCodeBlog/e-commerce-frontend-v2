@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import AdminComponent from '../../../../components/shared/AdminComponent';
 import TitleAdminPanel from '../../../../components/shared/TitleAdminPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faHeadset } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faMicrochip } from '@fortawesome/free-solid-svg-icons';
 import AdminListTable from '../../../../components/shared/AdminListTable';
 import AdminDeleteModal from '../../../../components/shared/AdminDeleteModal';
 import styles from '../../../../styles/AdminPanel.module.css';
@@ -77,7 +77,7 @@ const List: React.FC = () => {
       <TitleAdminPanel 
         title="Requisitos" 
         path="Dashboard > Requisitos" 
-        icon={faHeadset} 
+        icon={faMicrochip} 
         newPath="/Admin/SystemRequirements/New" 
       />
 

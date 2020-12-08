@@ -5,10 +5,12 @@ import { faGhost, faTimes } from '@fortawesome/free-solid-svg-icons';
 import StyledButton from '../../../components/shared/StyledButton';
 
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from '../../../styles/AdminPanel.module.css';
 import Category from '../../../dtos/Category';
+
+import { clearCategoryToEdit } from '../../../store/modules/admin/category/reducer';
 
 interface CategoryFormProps {
   handleSubmit: (category: Category) => Promise<void>;
@@ -19,6 +21,8 @@ interface CategoryFormProps {
 const CategoryForm: React.FC<CategoryFormProps> = ({ handleSubmit, action = 'Adicionar' }) => {
   const [name, setName] = useState('');
   const category = useSelector(state => state.category);
+
+  const dispatch = useDispatch();
 
   // checando se a categoria não é vazia e se o a url contem a palavra Edit para
   // setar o valor do nome para a edição
@@ -64,7 +68,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ handleSubmit, action = 'Adi
                 icon={faTimes} 
                 action={"Cancelar"} 
                 type_button="red" 
-                onClick={() => router.back()}
+                onClick={() => {
+                  // limpando a categoria para edição quando a edição é cancelada
+                  // para não enviar o id caso seja um cadastro para não dar erro
+                  // de chave primária
+                  dispatch(clearCategoryToEdit());
+                  router.back();
+                }}
             />
         </div>
       </Form>
