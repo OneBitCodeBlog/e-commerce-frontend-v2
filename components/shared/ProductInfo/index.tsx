@@ -2,8 +2,11 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import styles from '../../../styles/ProductInfo.module.css';
 
+interface HighlitedButtonProps {
+  type?: String;
+}
 
-const ProductInfo: React.FC = () => {
+const ProductInfo: React.FC<HighlitedButtonProps> = ({ type }) => {
   return (
     <div>
       <div>
@@ -19,7 +22,10 @@ const ProductInfo: React.FC = () => {
         </div>
 
         <div className={styles.button}>
-          <Button className="btn btn-info">R$ 19,90</Button>
+          { type ? 
+            <Button className="btn btn-info">R$ 19,90</Button> : 
+            <Button className={styles.highlited_button}>R$ 19,90</Button> 
+          }
         </div>
       </div>
     </div>

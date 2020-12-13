@@ -33,7 +33,7 @@ const Storefront: React.FC = () => {
                 </Carousel.Item>
             </Carousel>
 
-            <HighlitedProducts title="Ofertas da Semana" />
+            <HighlitedProducts title="Ofertas da Semana" type="highlited" />
 
             <HighlitedProducts title="Lancamentos" />
 

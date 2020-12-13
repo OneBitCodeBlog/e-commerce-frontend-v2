@@ -4,7 +4,7 @@ import { InputGroup, FormControl, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../../styles/Search.module.css';
-import StyledButton from '../../../components/shared/StyledButton';
+import stylesButton from '../../../styles/SelectButton.module.css';
 import ProductInfo from '../../../components/shared/ProductInfo';
 
 const Search: React.FC = () => {
@@ -17,13 +17,13 @@ const Search: React.FC = () => {
 
         <form className="mb-4">
           <Row className="text-center col-md-6 offset-md-3">
-            <Col xs={11}>
+            <Col xs={10}>
               <InputGroup className="pl-4">
                   <FormControl placeholder="Pesquise!!" />
               </InputGroup>
             </Col>
 
-            <Col xs={1}>
+            <Col xs={2}>
               <Button type="submit" className={styles.button}>
                 <FontAwesomeIcon icon={faSearch} size="2x" />
               </Button>
@@ -39,16 +39,44 @@ const Search: React.FC = () => {
           <Col>
             <div className="float-right">
               <b className="mr-3">Ordenar por:</b>
-              <StyledButton action="Menor Preco" type_button="blue" />
+              <select className={stylesButton.secondary}>
+                <option>Categoria</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+              </select>
             </div>
           </Col>
         </Row>
 
         <Row>
-          <StyledButton action="Categoria" type_button="blue" />
-          <StyledButton action="Tipo" type_button="blue" />
-          <StyledButton action="Faixa Etária" type_button="blue" />
-          <StyledButton action="Preco" type_button="blue" />
+          <select className={stylesButton.primary}>
+            <option>Categoria</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+          
+          <select className={stylesButton.primary}>
+            <option>Tipo</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+
+          <select className={stylesButton.primary}>
+            <option>Faixa Etária</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+
+          <select className={stylesButton.primary}>
+            <option>Preço</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
         </Row>
 
         <div className="mt-4">

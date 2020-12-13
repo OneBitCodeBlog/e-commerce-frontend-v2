@@ -7,9 +7,10 @@ import ProductInfo from '../shared/ProductInfo';
 
 interface HighlitedProductsProps {
   title: String;
+  type?: String;
 }
 
-const HighlitedProducts: React.FC<HighlitedProductsProps> = ({ title }) => {
+const HighlitedProducts: React.FC<HighlitedProductsProps> = ({ title, type }) => {
   return (
     <div>
       <Row className="mt-4">
@@ -32,19 +33,19 @@ const HighlitedProducts: React.FC<HighlitedProductsProps> = ({ title }) => {
 
       <Row className="mt-4 mb-4">
         <Col md={3}>
-          <ProductInfo />
+          <ProductInfo type={type} />
         </Col>
 
         <Col md={3}>
-          <ProductInfo />
+          <ProductInfo type={type} />
         </Col>
 
         <Col md={3}>
-          <ProductInfo />
+          <ProductInfo type={type} />
         </Col>
 
         <Col md={3}>
-          <ProductInfo />
+          <ProductInfo type={type} />
         </Col>
       </Row>
     </div>
