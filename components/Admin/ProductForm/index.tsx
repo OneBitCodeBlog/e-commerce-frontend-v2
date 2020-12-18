@@ -81,7 +81,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
     formData.append('product[id]', id.toString());
     formData.append('product[name]', name);
     formData.append('product[description]', description);
-    formData.append('product[category_ids]', JSON.stringify(categories));
+
+    // mandando cada categoria selecionada como um campo
+    // no form data
+    categories.forEach(category => 
+      formData.append(`product[category_ids][]`, category)
+    )
     
     formData.append('product[mode]', mode);
     formData.append('product[developer]', developer);
