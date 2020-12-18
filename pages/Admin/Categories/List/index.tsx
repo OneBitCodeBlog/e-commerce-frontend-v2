@@ -26,9 +26,9 @@ import UrlService from '../../../../util/UrlService';
 const List: React.FC = () => {
   const [show, setShow] = useState(false);
   const [categoryToRemove, setCategoryToRemove] = useState(0);
-  const [url, setUrl] = useState(defaultUrl)
+  const [url, setUrl] = useState(defaultUrl);
 
-  const { data, error, mutate } = useSWR(url, CategoriesService.index)
+  const { data, error, mutate } = useSWR(url, CategoriesService.index);
   const search = useSelector(state => state.search);
 
   const dispatch = useDispatch();

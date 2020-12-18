@@ -249,7 +249,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                   defaultValue={releaseDate}
                   placeholder="Digite o nome da desenvolvedora"
                   onChange={
-                    (evt: React.ChangeEvent<HTMLSelectElement>) =>
+                    (evt: React.ChangeEvent<HTMLInputElement>) =>
                       setReleaseDate(evt.target.value)
                   }
                   required
@@ -335,7 +335,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
             action={"Cancelar"}
             type_button="red"
             onClick={() => {
-              // limpando a categoria para edição quando a edição é cancelada
+              // limpando a product para edição quando a edição é cancelada
               // para não enviar o id caso seja um cadastro para não dar erro
               // de chave primária
               dispatch(clearProductToEdit());
