@@ -1,12 +1,14 @@
 interface IUrlServiceRequest {
   page: string | string[];
-  search?: string;
+  search?: string | string[];
 }
 
 const UrlService = {
   execute({ page, search }: IUrlServiceRequest): string {
-    return `${search !== '' ? `?search[name]=${search}` : ''}` +
-      `${search !== '' ? '&' : '?'}page=${page}`;
+    console.log(page)
+    console.log(search)
+    return `${!!search ? `?search[name]=${search}` : ''}` +
+      `${!!search ? '&' : '?'}page=${page}`;
   }
 }
 

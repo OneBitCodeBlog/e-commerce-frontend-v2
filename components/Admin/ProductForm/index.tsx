@@ -60,7 +60,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
       setMode(product.mode);      
       setDeveloper(product.developer);
 
-            
       // separando a data no T e pegando apenas o valor da data
       // '2020-12-31T00:00:000Z'
       setReleaseDate(product.release_date.split('T')[0]);

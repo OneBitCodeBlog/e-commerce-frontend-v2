@@ -13,6 +13,8 @@ import {
   clearSearch 
 } from '../../../../store/modules/admin/shared/search/reducer';
 
+import { useRouter } from 'next/router';
+
 interface SearchAndIcon {
   icon: IconProp;
   newPath: string;
@@ -21,6 +23,7 @@ interface SearchAndIcon {
 const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
+  const router = useRouter();
 
   // limpando a pesquisa quando o component for renderizado
   useEffect(() => {
@@ -28,6 +31,11 @@ const SearchAndIcon: React.FC<SearchAndIcon> = ({ icon, newPath }) => {
   }, [])
 
   const handleSearch = (): void => {
+    // toda vez que o termo de pesquisa for alterado
+    // a página será alterada para 1.
+    // utilizamos o método replace que tem a mesma função do metódo push, 
+    // onde o mesmo não adiciona mais uma entrada no history do browser.
+    router.replace(router.pathname, '?page=1');
     dispatch(setSearchRedux(search));
   }
 
