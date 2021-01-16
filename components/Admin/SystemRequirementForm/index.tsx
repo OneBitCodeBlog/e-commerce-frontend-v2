@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { faMicrochip, faTimes } from '@fortawesome/free-solid-svg-icons';
-import styles from '../../../styles/AdminPanel.module.css';
+import styles from '../styles.module.css';
 import StyledButton from '../../../components/shared/StyledButton';
 import SystemRequirement from '../../../dtos/SystemRequirement';
 

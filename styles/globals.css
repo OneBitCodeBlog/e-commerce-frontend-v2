@@ -23,21 +23,24 @@ body, .sticky-footer-wrapper {
     min-height:100vh;
 }
 
+
+
+
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* alterando a cor do ícone do calendário para branco */
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.7);
-  transition: filter 0.2s;
+    filter: invert(0.7);
+    transition: filter 0.2s;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  filter: invert(1);
+    filter: invert(1);
 }

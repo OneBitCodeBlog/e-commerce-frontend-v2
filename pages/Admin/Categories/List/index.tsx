@@ -88,10 +88,10 @@ const List: React.FC = () => {
           <AdminListTable first_title="Nome da categoria" meta={data.meta}>
             {
               data.categories.map(category => (
-                <tr className={styles.table_line} key={category.id}>
+                <tr key={category.id}>
                   <td>{category.name}</td>
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faEdit} 
                         onClick={() => handleEdit(category)}
@@ -100,7 +100,7 @@ const List: React.FC = () => {
                   </td>
 
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faTrash} 
                         onClick={() => handleShow(category.id)} 

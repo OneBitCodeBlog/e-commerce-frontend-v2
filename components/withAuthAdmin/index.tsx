@@ -10,7 +10,13 @@ const withAuthAdmin = (Component) => {
   const Auth = (props) => {
     const router = useRouter();
     const loggedUser: User = useSelector((state: AuthState) => state.auth.loggedUser);
-    const apiData: ApiData = JSON.parse(Cookie.get('@api-data'));
+
+    let apiData: ApiData;
+    if (Cookie.get('@api-data')) {
+      apiData = JSON.parse(Cookie.get('@api-data'));
+    } else {
+      router.push('/Auth/Login')
+    }
 
     // checando se o usuário existe no redux e se o mesmo é admin
     // checando se os dados da api existem no cookie e ainda se existe
