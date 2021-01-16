@@ -7,3 +7,10 @@
 .list {
     margin-top: 50px;
 }
+
+@media screen and (max-width: 768px) {
+    .background {
+        visibility: hidden;
+        height: 0;
+    }
+}

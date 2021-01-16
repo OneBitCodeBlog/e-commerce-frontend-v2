@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import AdminListTable from '../../../../components/shared/AdminListTable';
 import AdminDeleteModal from '../../../../components/shared/AdminDeleteModal';
-import styles from '../../../../styles/AdminPanel.module.css';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
@@ -95,13 +94,13 @@ const List: React.FC = () => {
           >
             {
               data.users.map(user => (
-                <tr className={styles.table_line} key={user.id}>
+                <tr key={user.id}>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.id}</td>
                   <td>{user.profile === 'admin' ? 'Administrador' : 'Cliente'}</td>
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faEdit} 
                         onClick={() => handleEdit(user)}
@@ -109,7 +108,7 @@ const List: React.FC = () => {
                     </div>
                   </td>
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faTrash} 
                         onClick={() => handleShow(user.id)} 

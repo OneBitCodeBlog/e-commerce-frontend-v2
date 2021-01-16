@@ -2,6 +2,7 @@
   background-color: var(--color-secondary);
   border: none;
   height: 30px;
+  margin-right: -20px;
 }
 
 .input:focus {
@@ -10,4 +11,14 @@
 
 .titleButton {
   margin-top: -5px;
+}
+
+.search_icon svg {
+  margin-top: 3.5px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.search_icon svg:hover {
+  color: #00CFFF;
 }

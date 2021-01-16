@@ -5,8 +5,21 @@
     margin-top: 100px;
 }
 
+.background a svg:hover {
+    display: pointer;
+    color: #00CFFF;
+    transition: color 0.2s;
+}
+
 .name {
     color: var(--color-gray-light);
     font-size: 0.9rem;
     margin-right: 10px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .background {
+        margin: 20px 1px;
+    }
 }

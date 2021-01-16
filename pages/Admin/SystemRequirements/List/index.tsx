@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faMicrochip } from '@fortawesome/free-solid-svg-icons';
 import AdminListTable from '../../../../components/shared/AdminListTable';
 import AdminDeleteModal from '../../../../components/shared/AdminDeleteModal';
-import styles from '../../../../styles/AdminPanel.module.css';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
@@ -96,7 +95,7 @@ const List: React.FC = () => {
           >
             {
               data.system_requirements.map(system_requirement => (
-                <tr className={styles.table_line} key={system_requirement.id}>
+                <tr key={system_requirement.id}>
                   <td>{system_requirement.name}</td>
                   <td>{system_requirement.operational_system}</td>
                   <td>{system_requirement.storage}</td>
@@ -104,7 +103,7 @@ const List: React.FC = () => {
                   <td>{system_requirement.memory}</td>
                   <td>{system_requirement.video_board}</td>
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faEdit} 
                         onClick={() => handleEdit(system_requirement)}
@@ -112,7 +111,7 @@ const List: React.FC = () => {
                     </div>
                   </td>
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faTrash} 
                         onClick={() => handleShow(system_requirement.id)} />

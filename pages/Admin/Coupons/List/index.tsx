@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faTicketAlt } from '@fortawesome/free-solid-svg-icons';
 import AdminListTable from '../../../../components/shared/AdminListTable';
 import AdminDeleteModal from '../../../../components/shared/AdminDeleteModal';
-import styles from '../../../../styles/AdminPanel.module.css';
 
 import withAuthAdmin from '../../../../components/withAuthAdmin';
 
@@ -98,7 +97,7 @@ const List: React.FC = () => {
           >
             {
               data.coupons.map(coupon => (
-                <tr className={styles.table_line} key={coupon.id}>
+                <tr key={coupon.id}>
                   <td>{coupon.name}</td>
                   <td>{coupon.code}</td>
                   <td>{coupon.status === 'inactive' ? 'Inativo' : 'Ativo'}</td>
@@ -106,7 +105,7 @@ const List: React.FC = () => {
                   <td>{coupon.due_date.split('T')[0]}</td>
                   
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faEdit} 
                         onClick={() => handleEdit(coupon)}
@@ -114,7 +113,7 @@ const List: React.FC = () => {
                     </div>
                   </td>
                   <td>
-                    <div className={styles.hover}>
+                    <div>
                       <FontAwesomeIcon 
                         icon={faTrash} 
                         onClick={() => handleShow(coupon.id)} 

@@ -31,5 +31,6 @@
 
 .admin_panel table tr td div:hover {
   cursor: pointer;
-  color: #0056b3;
+  color: #00CFFF;
+  transition: color 0.2s;
 }
