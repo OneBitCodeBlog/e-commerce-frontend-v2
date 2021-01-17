@@ -7,7 +7,7 @@
 
 .background a svg:hover {
     display: pointer;
-    color: #00CFFF;
+    color: var(--color-hover);
     transition: color 0.2s;
 }
 
@@ -15,6 +15,10 @@
     color: var(--color-gray-light);
     font-size: 0.9rem;
     margin-right: 10px;
+}
+
+.active {
+    color: var(--color-active);
 }
 
 

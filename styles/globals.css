@@ -7,6 +7,8 @@
     --color-gray-light: #7DA1BC;
     --color-blue-light: #00CFFF;
     --color-white: #FFFFFF;
+    --color-hover: #01b1d8;
+    --color-active: #71eFFF;
 }
 
 html,
@@ -31,7 +33,12 @@ a {
 
 a:hover {
     text-decoration: none;
-    color: #00CFFF;
+    color: var(--color-hover);
+}
+
+a:hover svg {
+    transition: color 0.2s;
+    color: var(--color-hover);
 }
 
 * {
