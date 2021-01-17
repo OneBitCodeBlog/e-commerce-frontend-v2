@@ -20,5 +20,5 @@
 }
 
 .search_icon svg:hover {
-  color: #00CFFF;
+  color: var(--color-hover);
 }
