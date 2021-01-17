@@ -9,4 +9,8 @@
   .styledPath {
     display: none!important;
   }
+
+  .title {
+    margin-left: 20px;
+  }
 }

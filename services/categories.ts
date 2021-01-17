@@ -17,7 +17,7 @@ const CategoriesService = {
   },
 
   update: ({id, name}: Category) => {
-    return api.put<void>(`/admin/v1/categories/${id}`, { name });
+    return api.patch<void>(`/admin/v1/categories/${id}`, { name });
   },
 
   delete: (id: number) => {

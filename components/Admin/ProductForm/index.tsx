@@ -39,6 +39,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
 
   const [productImage, setProductImage] = useState('');
 
+  const [featured, setFeatured] = useState('false');
+
   const product: Product = useSelector(state => state.product);
 
   // length=999 para pegar 999 categorias e 999 requerimentos de sistema
@@ -68,6 +70,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
       // não existitem ou forem null ele irá atribuir 1
       setSystemRequirement(product?.system_requirement?.id ?? 1);
 
+      setFeatured(product.featured);
       setPrice(product.price);
       setStatus(product.status);
 
@@ -95,6 +98,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
     formData.append('product[release_date]', releaseDate);
     formData.append('product[system_requirement_id]', systemRequirement.toString())
 
+    console.log(featured);
+    formData.append('product[featured]', featured);
     formData.append('product[price]', price.toString());
     formData.append('product[status]', status);
 
@@ -289,8 +294,24 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
               </Form.Group>
             </Form.Row>
 
-            <Form.Row>              
-              <Form.Group as={Col} md={6} sm={12} className="p-2">
+            <Form.Row>      
+              <Form.Group as={Col} md={4} sm={12} className="p-2">
+                <Form.Label>Em destaque:</Form.Label>
+                <Form.Control 
+                  as="select"
+                  className={styles.secundary_input}
+                  value={featured}
+                  onChange={
+                    (evt: React.ChangeEvent<HTMLSelectElement>) =>
+                      setFeatured(evt.target.value)
+                  }
+                >
+                  <option value="false">Não</option>
+                  <option value="true">Sim</option>
+                </Form.Control>
+              </Form.Group>        
+              
+              <Form.Group as={Col} md={4} sm={12} className="p-2">
                 <Form.Label>Preço</Form.Label>
                 <Form.Control
                   type="text"
@@ -305,7 +326,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ handleSubmit, action = 'Adici
                 />
               </Form.Group>
 
-              <Form.Group as={Col} md={6} sm={12} className="p-2">
+              <Form.Group as={Col} md={4} sm={12} className="p-2">
                 <Form.Label>Status</Form.Label>
                 <Form.Control
                   as="select"

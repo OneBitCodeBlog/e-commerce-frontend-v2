@@ -3,14 +3,14 @@ import api from './api';
 import Coupon from '../dtos/Coupon';
 import Meta from '../dtos/Meta';
 
-interface ICouponsIndexData {
+interface CouponsIndexData {
   coupons: Coupon[],
   meta: Meta
 }
 
 const CouponsService = {
   index(url: string) {
-    return api.get<ICouponsIndexData>(url).then(response => response.data);
+    return api.get<CouponsIndexData>(url).then(response => response.data);
   },
 
   create(coupon: Coupon) {
@@ -18,7 +18,7 @@ const CouponsService = {
   },
 
   update(coupon: Coupon) {
-    return api.put<void>(`/admin/v1/coupons/${coupon.id}`, coupon);
+    return api.patch<void>(`/admin/v1/coupons/${coupon.id}`, coupon);
   },
 
   delete(id: number) {

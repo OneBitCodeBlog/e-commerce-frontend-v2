@@ -11,6 +11,18 @@
     transition: color 0.2s;
 }
 
+.menu  {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .name {
     color: var(--color-gray-light);
     font-size: 0.9rem;
@@ -22,8 +34,16 @@
 }
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 990px) {
     .background {
         margin: 20px 1px;
+    }
+
+    .menu  {
+        justify-content: space-around;
+    }
+
+    .profile {
+        display: none;
     }
 }
