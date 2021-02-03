@@ -8,7 +8,6 @@
 }
 
 .line {
-    margin-top: 50px;
     background-color: white;
     opacity: 0.2;
 }
@@ -25,4 +24,8 @@
 
 .list li {
     display: block;
+}
+
+.mb_50 {
+    margin-bottom: 50px;
 }

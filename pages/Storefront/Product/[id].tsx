@@ -11,7 +11,7 @@ import StyledButton from '../../../components/shared/StyledButton';
 const Product: React.FC = () => {
   return (
     <MainComponent>
-      <Row className="mt-4">
+      <Row className="mt-4 mb-4">
         <Col md={6}>
             {/* html img usado por ter que regular responsividade da imagem, como 100% */}
             {/* ao col-md-6 */}
@@ -66,7 +66,7 @@ const Product: React.FC = () => {
 
         <Col md={6}>
           <BlueBackground>
-            <Row>
+            <Row className="mb-4">
               <Col>
                 <b>Counter Strike</b>
 
@@ -82,7 +82,7 @@ const Product: React.FC = () => {
               </Col>
             </Row>
 
-            <Row className="mt-4">
+            <Row className={styles.mb_50}>
               <Col>
                 <Badge variant="primary" className={styles.secondary_badge}>LANÇAMENTO</Badge> <br />
                 23/10/2020
