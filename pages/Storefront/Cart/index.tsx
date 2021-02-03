@@ -106,7 +106,7 @@ const Cart: React.FC = () => {
 
             <div className="mt-3">
               <Row>
-                <Col>
+                <Col xs={{span: 8}}>
                   <b>Data de validade</b>
 
                   <Row>
@@ -148,7 +148,7 @@ const Cart: React.FC = () => {
                   </Row>
                 </Col>
 
-                <Col>
+                <Col xs={{span: 4}}>
                   <b>Código</b> <br />
                   <input type="text" placeholder="xxx" className={`${styles.gray_input} w-100`} />
                 </Col>
