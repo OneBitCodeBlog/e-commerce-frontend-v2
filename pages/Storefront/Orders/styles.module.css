@@ -3,10 +3,6 @@
     padding-right: 110px;
 }
 
-.admin_table table thead tr th:last-child {
-    display: none;
-}
-
-.admin_table table tbody tr:hover {
+.table tr, .table th, .table td {
     color: white;
 }
