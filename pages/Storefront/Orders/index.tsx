@@ -1,5 +1,4 @@
 import React from 'react';
-import AdminListTable from '../../../components/shared/AdminListTable';
 import MainComponent from '../../../components/shared/MainComponent';
 
 import styles from './styles.module.css';
