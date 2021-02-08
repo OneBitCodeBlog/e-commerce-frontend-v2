@@ -1,0 +1,12 @@
+.table_line {
+    background-color: var(--color-background);
+    padding-right: 110px;
+}
+
+.admin_table table thead tr th:last-child {
+    display: none;
+}
+
+.admin_table table tbody tr:hover {
+    color: white;
+}
